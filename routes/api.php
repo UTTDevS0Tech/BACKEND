@@ -18,3 +18,4 @@ Route::apiResource('servicios', ServicioController::class);
 //POST /api/servicios
 //PUT /api/servicios/{id}
 //DELETE /api/servicios/{id}
+Route::apiResource('tipo-servicios', TipoServicioController::class);
