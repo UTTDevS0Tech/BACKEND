@@ -18,6 +18,4 @@ Route::apiResource('servicios', ServicioController::class);
 //POST /api/servicios
 //PUT /api/servicios/{id}
 //DELETE /api/servicios/{id}
-
-Route::patch('servicio/{id}/toggle', [ServicioController::class, 'toggle']);
 Route::apiResource('tipo-servicios', TipoServicioController::class);

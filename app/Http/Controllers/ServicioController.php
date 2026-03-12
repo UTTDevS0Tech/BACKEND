@@ -89,31 +89,4 @@ class ServicioController extends Controller
             'message' => 'Servicio eliminado correctamente'
         ], 200);
     }
-
-    public function toggle($id)
-{
-    $servicio = Servicio::find($id);
-
-    if (!$servicio) {
-        return response()->json([
-            'message' => 'Servicio no encontrado'
-        ], 404);
-    }
-
-    // Cambiar estado
-    $servicio->activo = !$servicio->activo;
-    $servicio->save();
-
-    // Desactivar todos los tipos
-    if (!$servicio->activo) {
-        $servicio->tiposServicio()->update([
-            'activo' => false
-        ]);
-    }
-
-    return response()->json([
-        'message' => 'Estado actualizado correctamente',
-        'data' => $servicio
-    ]);
-}
 }
