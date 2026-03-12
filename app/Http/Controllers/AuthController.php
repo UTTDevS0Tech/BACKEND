@@ -53,3 +53,6 @@ public function logout(Request $request)
     return response()->json(['message' => 'Cerraste sesión fuga!']);
 
 }
+
+
+}
