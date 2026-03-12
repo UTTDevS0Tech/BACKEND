@@ -25,4 +25,16 @@ public function register(Request $request)
     return response()->json(['message' => 'Usuario Registrado correctamente :D', 'user' => $user], 201);
 
 }
+
+
+public function login(Request $request)
+{
+    $credentials = $request->validate([
+        'email' => 'required|string|email',
+        'password' => 'required|string',
+    ]);
+
+    if (!auth()->attempt($credentials)) {
+        return response()->json(['message' => 'Credenciales inválidas'], 401);
+    }
 }
