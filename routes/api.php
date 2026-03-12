@@ -20,3 +20,4 @@ Route::apiResource('servicios', ServicioController::class);
 //DELETE /api/servicios/{id}
 Route::patch('servicio/{id}/toggle', [ServicioController::class, 'toggle']);
 Route::apiResource('tipo-servicios', TipoServicioController::class);
+Route::patch('tipo-servicios/{id}/toggle-status', [TipoServicioController::class, 'toggleStatus']);
