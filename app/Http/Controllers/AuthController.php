@@ -37,4 +37,13 @@ public function login(Request $request)
     if (!auth()->attempt($credentials)) {
         return response()->json(['message' => 'Credenciales inválidas'], 401);
     }
+
+    $token = auth()->user()->createToken('auth_token')->plainTextToken;
+
+    return response()->json(['message' => 'Inicio de sesión exitoso', 
+    'access_token' => $token,
+    'token_type' => 'Bearer']);
+
+}
+
 }
