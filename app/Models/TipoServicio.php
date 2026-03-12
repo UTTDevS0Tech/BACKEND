@@ -13,7 +13,7 @@ class Tipo_Servicio extends Model
     'activo',
     'imagen',
     'tiempo_estimado',
-    'tipo_servicio_id',
+    'servicio_id',
 ];
 
 
