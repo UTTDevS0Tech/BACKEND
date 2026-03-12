@@ -88,4 +88,17 @@ class TipoServicioController extends Controller
             'message' => 'Tipo de servicio eliminado correctamente'
         ]);
     }
+
+    public function toggleStatus($id)
+    {
+        $tipoServicio = Tipo_Servicio::findOrFail($id);
+
+        $tipoServicio->activo = !$tipoServicio->activo;
+        $tipoServicio->save();
+
+        return $this->apiResponse(
+            $tipoServicio,
+            'Estado del tipo de servicio actualizado correctamente'
+        );
+    }
 }
