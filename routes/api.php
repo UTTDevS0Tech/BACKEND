@@ -13,6 +13,8 @@ Route::get('/user', function (Request $request) {
 Route::get('users', [UserController::class, 'index']);
 Route::get('users/{id}', [UserController::class, 'show']);
 Route::post('users', [UserController::class, 'store']);
+Route::patch('users/{id}/toggle', [UserController::class, 'toggleActivo']);
+Route::get('users/rol/{rol}', [UserController::class, 'usersByRol']);
 
 //AUTH
 Route::post('/register', [AuthController::class, 'register']);
