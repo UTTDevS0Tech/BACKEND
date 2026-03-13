@@ -25,4 +25,34 @@ public function register(Request $request)
     return response()->json(['message' => 'Usuario Registrado correctamente :D', 'user' => $user], 201);
 
 }
+
+
+public function login(Request $request)
+{
+    $credentials = $request->validate([
+        'email' => 'required|string|email',
+        'password' => 'required|string',
+    ]);
+
+    if (!auth()->attempt($credentials)) {
+        return response()->json(['message' => 'Credenciales inválidas'], 401);
+    }
+
+    $token = auth()->user()->createToken('auth_token')->plainTextToken;
+
+    return response()->json(['message' => 'Inicio de sesión exitoso', 
+    'access_token' => $token,
+    'token_type' => 'Bearer']);
+
+}
+
+public function logout(Request $request)
+{
+    auth()->user()->currentAccessToken()->delete();
+
+    return response()->json(['message' => 'Cerraste sesión fuga!']);
+
+}
+
+
 }
