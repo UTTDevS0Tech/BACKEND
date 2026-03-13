@@ -2,109 +2,64 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ServicioRequest;
+use App\Http\Resources\ServicioResource;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
 
 class ServicioController extends Controller
 {
-    // GET /api/servicio
-    public function index()
-    {
-        $tipos = Servicio::all();
-
-        return response()->json($tipos, 200);
-    }
-
-    // GET /api/servicio/{id}
-    public function show($id)
-    {
-        $tipo = Servicio::find($id);
-
-        if (!$tipo) {
-            return response()->json([
-                'message' => 'Servicio no encontrado'
-            ], 404);
-        }
-
-        return response()->json($tipo, 200);
-    }
-
-    // POST /api/servicio
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'activo' => 'boolean'
-        ]);
-
-        $tipo = Servicio::create([
-            'nombre' => $request->nombre,
-            'activo' => $request->activo ?? true
-        ]);
-
-        return response()->json([
-            'message' => 'Servicio creado correctamente',
-            'data' => $tipo
-        ], 201);
-    }
-
-    // PUT /api/servicio/{id}
-    public function update(Request $request, $id)
-    {
-        $tipo = Servicio::find($id);
-
-        if (!$tipo) {
-            return response()->json([
-                'message' => 'Servicio no encontrado'
-            ], 404);
-        }
-
-        $request->validate([
-            'nombre' => 'sometimes|string|max:255',
-            'activo' => 'sometimes|boolean'
-        ]);
-
-        $tipo->update($request->only(['nombre', 'activo']));
-
-        return response()->json([
-            'message' => 'Servicio actualizado correctamente',
-            'data' => $tipo
-        ], 200);
-    }
-
-    // DELETE /api/servicio/{id}
-    public function destroy($id)
-    {
-        $tipo = Servicio::find($id);
-
-        if (!$tipo) {
-            return response()->json([
-                'message' => 'Servicio no encontrado'
-            ], 404);
-        }
-
-        $tipo->delete();
-
-        return response()->json([
-            'message' => 'Servicio eliminado correctamente'
-        ], 200);
-    }
-
- public function toggle($id)
+    
+public function index()
 {
-    $servicio = Servicio::find($id);
+    $servicios = Servicio::all();
 
-    if (!$servicio) {
-        return response()->json([
-            'message' => 'Servicio no encontrado'
-        ], 404);
-    }
+    return ServicioResource::collection($servicios);
+}
 
-    // Cambiar estado
+public function show($id)
+{
+    $servicio = Servicio::findOrFail($id);
+
+    return new ServicioResource($servicio);
+}
+
+public function store(ServicioRequest $request)
+{
+    $servicio = Servicio::create($request->validated());
+
+    return new ServicioResource($servicio);
+}
+
+public function update(ServicioRequest $request, $id)
+{
+    $servicio = Servicio::findOrFail($id);
+
+    $servicio->update($request->validated());
+
+    return new ServicioResource($servicio);
+}
+    
+public function destroy($id)
+{
+    $servicio = Servicio::findOrFail($id);
+
+    $servicio->delete();
+
+    return response()->json([
+        'message' => 'Servicio eliminado correctamente'
+    ]);
+}
+
+public function toggle($id)
+{
+    $servicio = Servicio::findOrFail($id);
+
+    // cambiar estado
     $servicio->activo = !$servicio->activo;
     $servicio->save();
 
-    // Desactivar todos los tipos
+    //desactivar todos los tipos de servicio
     if (!$servicio->activo) {
         $servicio->tiposServicio()->update([
             'activo' => false
@@ -112,8 +67,8 @@ class ServicioController extends Controller
     }
 
     return response()->json([
-        'message' => 'Estado actualizado correctamente',
-        'data' => $servicio
+        'message' => 'Estado del servicio actualizado correctamente',
+        'data' => new ServicioResource($servicio)
     ]);
-}    
+}
 }
