@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TipoServicioController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ServicioController;
+use App\Http\Controllers\CitaController;
+use App\Http\Controllers\PersonalController;
 
 //USER
 Route::get('/user', function (Request $request) {
@@ -36,3 +39,8 @@ Route::apiResource('tipo-servicios', TipoServicioController::class);
 //PUT /api/tipo-servicios/{id}
 //DELETE /api/tipo-servicios/{id}
 Route::patch('tipo-servicios/{id}/toggle-status', [TipoServicioController::class, 'toggleStatus']);
+
+
+
+// RUTAS DE DIEGOOO
+Route::apiResource('estilistas', PersonalController::class);
