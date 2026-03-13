@@ -6,7 +6,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\TipoServicioController;
 use App\Http\Controllers\UserController;
-
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\PersonalController;
 
