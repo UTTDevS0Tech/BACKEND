@@ -17,7 +17,7 @@ return new class extends Migration
             $table->double('precio', 10, 2);
             $table->string('descripcion')->nullable();
             $table->boolean('activo')->default(true);
-            $table->string('imagen');
+            $table->string('imagen')->nullable();;
             $table->integer('tiempo_estimado');
             $table->foreignId('servicio_id')->constrained('servicios')->onDelete('cascade');
             $table->timestamps();

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\TipoServicio;
 class Servicio extends Model
 {
         protected $fillable = [
