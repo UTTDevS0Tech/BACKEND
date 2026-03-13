@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\TipoServicioRequest;
 use App\Models\TipoServicio;
 use App\Http\Resources\TipoServicioResource;
-use App\Http\Traits\ApiResponseTrait;
+use App\Traits\ApiResponse;
 
 
 class TipoServicioController extends Controller
@@ -14,7 +14,8 @@ class TipoServicioController extends Controller
     /**
      * Display a listing of the resource.
      */
-    use ApiResponseTrait;
+    use ApiResponse;
+
     public function index()
     {
 
