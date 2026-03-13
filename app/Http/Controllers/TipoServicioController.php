@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\TipoServicioRequest;
+use App\Models\TipoServicio;
+use App\Http\Resources\TipoServicioResource;
+use App\Http\Traits\ApiResponseTrait;
 
 
 class TipoServicioController extends Controller
@@ -11,10 +14,12 @@ class TipoServicioController extends Controller
     /**
      * Display a listing of the resource.
      */
+    use ApiResponseTrait;
     public function index()
     {
-        $tipos = TipoServicio::all();
-        return response()->json($tipos);
+
+      $tipoServicios = TipoServicio::all();
+      return $this->apiResponse(TipoServicioResource::collection(TipoServicio::all()));
     }
 
     /**
@@ -37,8 +42,7 @@ class TipoServicioController extends Controller
         }
 
         $tipoServicio = TipoServicio::create($data);
-
-        return response()->json($tipoServicio, 201);
+        return $this->apiResponse(new TipoServicioResource($tipoServicio), 'Tipo de servicio creado correctamente', 201);
     }
 
     /**
@@ -47,15 +51,11 @@ class TipoServicioController extends Controller
     public function show($id)
     {
         $tipoServicio = TipoServicio::findOrFail($id);
-        return response()->json($tipoServicio);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+   
+        if (!$tipoServicio) {
+            return $this->apiResponse(null, 'Tipo de servicio no encontrado', 404);
+        }
+        return $this->apiResponse(new TipoServicioResource($tipoServicio), 'tipo de servicio encontrado');
     }
 
     /**
@@ -64,6 +64,10 @@ class TipoServicioController extends Controller
     public function update(TipoServicioRequest $request, $id)
     {
         $tipoServicio = TipoServicio::findOrFail($id);
+            if (!$tipoServicio) {
+                return $this->apiResponse(null, 'Tipo de servicio no encontrado', 404);
+            }
+
 
         $data = $request->validated();
 
@@ -73,7 +77,7 @@ class TipoServicioController extends Controller
 
         $tipoServicio->update($data);
 
-        return response()->json($tipoServicio);
+        return $this->apiResponse(new TipoServicioResource($tipoServicio), 'Tipo de servicio actualizado correctamente');
     }
 
     /**
@@ -82,23 +86,25 @@ class TipoServicioController extends Controller
     public function destroy($id)
     {
         $tipoServicio = TipoServicio::findOrFail($id);
+        if (!$tipoServicio) {
+            return $this->apiResponse(null, 'Tipo de servicio no encontrado', 404);
+        }
         $tipoServicio->delete();
 
-        return response()->json([
-            'message' => 'Tipo de servicio eliminado correctamente'
-        ]);
+        return $this->apiResponse(null, 'Tipo de servicio eliminado correctamente');
     }
 
     public function toggleStatus($id)
     {
-        $tipoServicio = Tipo_Servicio::findOrFail($id);
+        $tipoServicio = TipoServicio::findOrFail($id);
+        if (!$tipoServicio) {
+            return $this->apiResponse(null, 'Tipo de servicio no encontrado', 404);
+        }
 
         $tipoServicio->activo = !$tipoServicio->activo;
         $tipoServicio->save();
 
-        return $this->apiResponse(
-            $tipoServicio,
-            'Estado del tipo de servicio actualizado correctamente'
-        );
+        return $this->apiResponse(new TipoServicioResource($tipoServicio), $tipoServicio->activo ? 
+        'Tipo de servicio activado correctamente' : 'Tipo de servicio desactivado correctamente');
     }
 }

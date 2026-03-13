@@ -3,19 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\UserRequest;
+use App\Http\Resources\UserResource;
+use App\Traits\ApiResponse;
 
 class UserController extends Controller
 {
+    use ApiResponse;
+
     // GET /users
     public function index()
     {
         $users = User::all();
 
-        return response()->json([
-            'message' => 'Lista de usuarios',
-            'data' => $users
-        ], 200);
+        return $this->apiResponse(
+            UserResource::collection($users),
+            'Lista de usuarios'
+        );
     }
 
     // GET /users/{id}
@@ -24,35 +29,81 @@ class UserController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return response()->json([
-                'message' => 'Usuario no encontrado'
-            ], 404);
+            return $this->apiResponse(null, 'Usuario no encontrado', 404);
         }
 
-        return response()->json([
-            'message' => 'Usuario encontrado',
-            'data' => $user
-        ], 200);
+        return $this->apiResponse(
+            new UserResource($user),
+            'Usuario encontrado'
+        );
     }
 
     // POST /users
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6'
-        ]);
+        $data = $request->validated();
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password
-        ]);
+        $data['password'] = Hash::make($data['password']);
 
-        return response()->json([
-            'message' => 'Usuario creado correctamente',
-            'data' => $user
-        ], 201);
+        $user = User::create($data);
+
+        return $this->apiResponse(
+            new UserResource($user),
+            'Usuario creado correctamente',
+            201
+        );
+    }
+
+    public function update(UserRequest $request, $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return $this->apiResponse(null, 'Usuario no encontrado', 404);
+        }
+
+        $data = $request->validated();
+
+        if (isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        $user->update($data);
+
+        return $this->apiResponse(
+            new UserResource($user),
+            'Usuario actualizado correctamente'
+        );
+    }
+
+    public function toggleActivo($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return $this->apiResponse(null, 'Usuario no encontrado', 404);
+        }
+
+        $user->activo = !$user->activo;
+        $user->save();
+
+        return $this->apiResponse(
+            new UserResource($user),
+            'Estado del usuario actualizado correctamente'
+        );
+    }
+
+    public function usersByRol($rol)
+    {
+        $users = User::where('rol_id', $rol)->get();
+
+        if ($users->isEmpty()) {
+            return $this->apiResponse(null, 'No hay usuarios con ese rol', 404);
+        }
+
+        return $this->apiResponse(
+            UserResource::collection($users),
+            'Usuarios encontrados'
+        );
     }
 }
