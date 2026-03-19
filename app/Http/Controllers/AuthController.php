@@ -11,13 +11,11 @@ class AuthController extends Controller
 public function register(Request $request)
 {
     $validatedData = $request->validate([
-        'name' => 'required|string|max:255',
         'email' => 'required|string|email|max:255|unique:users',
         'password' => 'required|string|min:8|confirmed',
     ]);
 
     $user = User::create([
-        'name' => $validatedData['name'],
         'email' => $validatedData['email'],
         'password' => bcrypt($validatedData['password']),
     ]);
@@ -41,8 +39,10 @@ public function login(Request $request)
     $token = auth()->user()->createToken('auth_token')->plainTextToken;
 
     return response()->json(['message' => 'Inicio de sesión exitoso', 
-    'access_token' => $token,
+    'token' => $token,
+    'user' => auth()->user(),
     'token_type' => 'Bearer']);
+    
 
 }
 
