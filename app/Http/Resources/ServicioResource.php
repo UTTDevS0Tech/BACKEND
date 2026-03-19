@@ -7,9 +7,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ServicioResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     */
+    public static $wrap = null;
+   
     public function toArray(Request $request): array
     {
         return [

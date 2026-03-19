@@ -24,6 +24,11 @@ Route::post('/register', [AuthController::class, 'register']);
 
 //SERVICIOS
 Route::apiResource('servicios', ServicioController::class);
+//GET /api/servicios
+//GET /api/servicios/{id}
+//POST /api/servicios
+//PUT /api/servicios/{id}
+//DELETE /api/servicios/{id}
 Route::patch('servicio/{id}/toggle', [ServicioController::class, 'toggle']);
 
 //TIPO SERVICIOS
