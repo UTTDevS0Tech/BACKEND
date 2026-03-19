@@ -21,7 +21,7 @@ Route::get('users/rol/{rol}', [UserController::class, 'usersByRol']);
 
 //AUTH
 Route::post('/register', [AuthController::class, 'register']);
-
+Route::post('/login', [AuthController::class, 'login']);
 //SERVICIOS
 Route::apiResource('servicios', ServicioController::class);
 Route::patch('servicio/{id}/toggle', [ServicioController::class, 'toggle']);

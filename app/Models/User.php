@@ -24,7 +24,7 @@ class User extends Authenticatable
         'activo',
         'rol_id',
     ];
-
+// volvimos al pedo de cuarto q dani me ponia el nombre en el user 
     /**
      * The attributes that should be hidden for serialization.
      *
