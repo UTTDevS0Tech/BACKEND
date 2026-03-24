@@ -14,7 +14,7 @@ return new class extends Migration
             Schema::create('citas', function (Blueprint $table) {
             $table->id();
             $table->decimal('apartado', 10, 2)->default(0.00);
-            $table->decimal('total', 10, 2);
+            $table->decimal('total', 10, 2)->nullable();
             $table->foreignId('personal_id')->constrained('personales')->onDelete('cascade');
             $table->time('hora_c');
             $table->date('fecha_c');
