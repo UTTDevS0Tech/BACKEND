@@ -30,11 +30,6 @@ Route::patch('servicio/{id}/toggle', [ServicioController::class, 'toggle']);
 
 //TIPO SERVICIOS
 Route::apiResource('tipo-servicios', TipoServicioController::class);
-//GET /api/tipo-servicios
-//GET /api/tipo-servicios/{id}
-//POST /api/tipo-servicios
-//PUT /api/tipo-servicios/{id}
-//DELETE /api/tipo-servicios/{id}
 Route::patch('tipo-servicios/{id}/toggle-status', [TipoServicioController::class, 'toggleStatus']);
 
 
