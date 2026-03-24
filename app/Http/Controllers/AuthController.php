@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User; 
+use App\Traits\ApiResponse;
+use App\Http\Requests\LoginRequest;
+use App\Http\Resources\UserResource;
 
 class AuthController extends Controller
 {
-    
+
+    use ApiResponse;
+
 public function register(Request $request)
 {
+    
     $validatedData = $request->validate([
         'email' => 'required|string|email|max:255|unique:users',
         'password' => 'required|string|min:8|confirmed',
@@ -25,9 +31,28 @@ public function register(Request $request)
 }
 
 
-public function login(Request $request)
+public function login(LoginRequest $request)
+
 {
-    $credentials = $request->validate([
+    $credentials = $request->only('email', 'password');
+
+    if (!auth()->attempt($credentials)) {
+        return $this->error('Credenciales inválidas', 401);
+    }
+
+    $user = auth()->user();
+
+    $token = $user->createToken('auth_token')->plainTextToken;
+
+    $user->access_token = $token;
+    $user->token_type = 'Bearer';
+
+    return $this->apiResponse(
+        new UserResource($user),
+        'Inicio de sesión exitoso'
+    );
+
+   /* $credentials = $request->validate([
         'email' => 'required|string|email',
         'password' => 'required|string',
     ]);
@@ -42,7 +67,7 @@ public function login(Request $request)
     'token' => $token,
     'user' => auth()->user(),
     'token_type' => 'Bearer']);
-    
+    */
 
 }
 
@@ -53,6 +78,5 @@ public function logout(Request $request)
     return response()->json(['message' => 'Cerraste sesión fuga!']);
 
 }
-
 
 }
