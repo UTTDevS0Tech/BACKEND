@@ -15,6 +15,17 @@ trait ApiResponse
             'message' => $message,
         ], $code);
     }
+     protected function successResponse($data=null, string $message='operacion exitosa uwu', int $code=200){
+
+        return $this->apiResponse($data, $message, $code);
+     }
+
+        protected function errorResponse(string $message= 'ocurrió un error', int $code=400, $error=null){
+    
+            return $this->apiResponse(null, $message, $code, $error);
+        }
+
+
 }
 
 
