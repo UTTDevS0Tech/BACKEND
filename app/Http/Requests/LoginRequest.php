@@ -13,10 +13,7 @@ class LoginRequest extends FormRequest
     {
         return true;
     }
-    public function authorize(): bool
-    {
-        return true;
-    }
+   
 
 
     public function rules(): array

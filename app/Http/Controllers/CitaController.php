@@ -7,7 +7,7 @@ use App\Models\Cita;
 use App\Models\Cliente;
 use App\Http\Resources\CitaResource;
 use App\Traits\ApiResponse;
-use Illuminate\Supports\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CitaRequest;
 use App\Http\Requests\CitaUpdateRequest;
 use Illuminate\Support\Facades\Log;
