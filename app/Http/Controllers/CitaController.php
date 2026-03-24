@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cita;
 use App\Http\Resources\CitaResource;
 use App\Traits\ApiResponse;
+use Illuminate\Supports\Facades\Auth;
 use App\Http\Requests\CitaRequest;
 use App\Http\Requests\CitaUpdateRequest;
 use Illuminate\Support\Facades\Log;
@@ -15,18 +16,20 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CitaController extends Controller
 {
+    use ApiResponse;
     
 
     public function index() {
         return $this->apiResponse(CitaResource::collection(Cita::all()), 'Citas regresadas', 200);
     }
-
+/*
     public function store() {
 
         $data = $request->validated();
         $cita = Cita::create($data);
         return $this->apiResponse(new CitaResource($cita), 'Cita creada', 201);
     }
+        */
 
     public function show ($id) {
         
@@ -63,4 +66,22 @@ class CitaController extends Controller
             return $this->apiResponse('cita no encontrada', 404);
         }
     }
+//jalaraa??? quien sabe...
+    public function store(CitaRequest $request) {
+
+        $clienteabuscar = Cliente::where('user_id', Auth::id())->first();
+
+        if(!$clienteabuscar) {
+            return $this->apiResponse(null, 'no hay perfil', 404);
+
+        }
+        $data = $request->validated();
+        $data['cliente_id'] = $clienteabuscar->id;
+        $data['estado'] = 'pendiente';
+
+
+    $citaweb = Cita::create($data);
+        return $this->apiResponse(new CitaResource($citaweb), 'cita web encontrada', 201);
+    }
 }
+

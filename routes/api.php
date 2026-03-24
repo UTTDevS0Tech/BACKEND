@@ -39,3 +39,11 @@ Route::patch('tipo-servicios/{id}/toggle-status', [TipoServicioController::class
 
 // RUTAS DE DIEGOOO
 Route::apiResource('estilistas', PersonalController::class);
+Route::middleware('auth:sanctum')->group(function () {
+Route::apiResource('citas', CitaController::class);
+});
+
+Route::apiResource('estilistas', PersonalController::class);
+Route::middleware('auth:sanctum')->group(function () {
+Route::apiResource('citas-escritorio', CitaEscritorioController::class);
+});

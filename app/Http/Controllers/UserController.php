@@ -17,10 +17,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return $this->apiResponse(
-            UserResource::collection($users),
-            'Lista de usuarios'
-        );
+        return $this->apiResponse(UserResource::collection($users),'Lista de usuarios');
     }
 
     // GET /users/{id}

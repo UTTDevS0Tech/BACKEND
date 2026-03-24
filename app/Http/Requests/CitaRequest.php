@@ -22,19 +22,21 @@ class CitaRequest extends FormRequest
    public function rules(): array
     {
         return [
-            'apartado' => 'required|numeric|min:0',
+            'apartado' => 'nullable|numeric|min:0',
+            'total' => 'nullable|numeric|min:0',
             'personal_id' => 'required|exists:personales,id',
             'hora_c' => 'required|date_format:H:i',
             'fecha_c' => 'required|date',
             'estado' => 'required|in:pendiente,confirmada,cancelada',
-            'cliente_id' => 'required|exists:clientes,id',
+            'cliente_id' => 'nullable|exists:clientes,id',
         ];
     }
 
      public function messages() {
 
         return [
-            'apartado.required' => 'El apartado es obligatorio.',
+            'apartado.nullable' => 'El apartado es opcional.',
+            'total.nullable' => 'El total es opcional.',
             'personal_id.required' => 'El personal es obligatorio.',
             'hora_c.required' => 'La hora de la cita es obligatoria.',
             'fecha_c.required' => 'La fecha de la cita es obligatoria.',
