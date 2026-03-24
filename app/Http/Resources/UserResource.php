@@ -15,6 +15,8 @@ class UserResource extends JsonResource
             'activo' => $this->activo,
             'rol_id' => $this->rol_id,
             'created_at' => $this->created_at,
+            'acces_token'=>$this->access_token ?? null,
+            'token_type'=>$this->token_type ?? null,
         ];
     }
 }
