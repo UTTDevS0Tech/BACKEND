@@ -11,13 +11,20 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        $rolEstilista = Rol::where('nombre', 'Estilista')->first();
+    User::create([
+        'email' => 'estilista@estetica.com',
+        'password' => Hash::make('password123'),
+        'activo' => true,
+        'rol_id' => Rol::where('nombre', 'Estilista')->first()->id,
+    ]);
+
+    
 
         User::create([
-            'email' => 'estilista@estetica.com',
-            'password' => Hash::make('password123'),
-            'activo' => true,
-            'rol_id' => $rolEstilista->id,
+            'email' => 'cliente@gmail.com',
+        'password' => Hash::make('password123'),
+        'activo' => true,
+        'rol_id' => Rol::where('nombre', 'Cliente')->first()->id,
         ]);
     }
 }

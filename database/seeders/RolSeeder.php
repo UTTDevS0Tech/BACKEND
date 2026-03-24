@@ -18,5 +18,10 @@ class RolSeeder extends Seeder
             'nombre' => 'Administrador',
             'descripcion' => 'Dueño del sistema'
         ]);
+
+        Rol::create([
+            'nombre' => 'Cliente',
+            'descripcion' => 'chilo'
+        ]);
     }
 }

@@ -21,7 +21,7 @@ Route::get('users/rol/{rol}', [UserController::class, 'usersByRol']);
 
 //AUTH
 Route::post('/register', [AuthController::class, 'register']);
-
+Route::post('/login', [AuthController::class, 'login']);
 //SERVICIOS
 Route::apiResource('servicios', ServicioController::class);
 //GET /api/servicios
@@ -44,3 +44,6 @@ Route::patch('tipo-servicios/{id}/toggle-status', [TipoServicioController::class
 
 // RUTAS DE DIEGOOO
 Route::apiResource('estilistas', PersonalController::class);
+Route::middleware('auth:sanctum')->group(function () {
+Route::apiResource('citas', CitaController::class);
+});
