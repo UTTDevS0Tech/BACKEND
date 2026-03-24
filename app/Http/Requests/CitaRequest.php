@@ -23,7 +23,6 @@ class CitaRequest extends FormRequest
     {
         return [
             'apartado' => 'nullable|numeric|min:0',
-            'total' => 'nullable|numeric|min:0',
             'personal_id' => 'required|exists:personales,id',
             'hora_c' => 'required|date_format:H:i',
             'fecha_c' => 'required|date',
