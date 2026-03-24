@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cita;
-use App\Models\Cliente;
 use App\Http\Resources\CitaResource;
 use App\Traits\ApiResponse;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Supports\Facades\Auth;
 use App\Http\Requests\CitaRequest;
 use App\Http\Requests\CitaUpdateRequest;
 use Illuminate\Support\Facades\Log;
@@ -18,12 +17,11 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class CitaController extends Controller
 {
     use ApiResponse;
+    
 
     public function index() {
         return $this->apiResponse(CitaResource::collection(Cita::all()), 'Citas regresadas', 200);
     }
-
-    //dormir la funcion esta por q me base en lo q normalmente veiamos pero con el auth saque el user para poder hacer la cuta web
 /*
     public function store() {
 
