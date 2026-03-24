@@ -18,7 +18,7 @@ class CitaResource extends JsonResource
         'id' => $this->id,
         'apartado' => $this->apartado,
         'personal_id' => $this->personal->nombre,
-        'hora_c' => $this->hora_c,
+        'horax_c' => $this->hora_c,
         'fecha_c' => $this->fecha_c,
         'estado' => $this->estado,
         'cliente_id' => $this->cliente->nom,

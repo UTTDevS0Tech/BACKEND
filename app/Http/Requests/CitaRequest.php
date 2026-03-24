@@ -27,7 +27,7 @@ class CitaRequest extends FormRequest
             'hora_c' => 'required|date_format:H:i',
             'fecha_c' => 'required|date',
             'estado' => 'required|in:pendiente,confirmada,cancelada',
-            'cliente_id' => 'required|exists:clientes,id',
+            'cliente_id' => 'nullable|exists:clientes,id',
         ];
     }
 
