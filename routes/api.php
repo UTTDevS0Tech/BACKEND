@@ -9,6 +9,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\CitaEscritorioController;
+use App\Http\Controllers\GaleriaController;
+
 
 
 //USER
@@ -24,6 +26,7 @@ Route::get('users/rol/{rol}', [UserController::class, 'usersByRol']);
 //AUTH
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
 //SERVICIOS
 Route::apiResource('servicios', ServicioController::class);
 Route::patch('servicio/{id}/toggle', [ServicioController::class, 'toggle']);
@@ -32,15 +35,23 @@ Route::patch('servicio/{id}/toggle', [ServicioController::class, 'toggle']);
 Route::apiResource('tipo-servicios', TipoServicioController::class);
 Route::patch('tipo-servicios/{id}/toggle-status', [TipoServicioController::class, 'toggleStatus']);
 
-
-
-// RUTAS DE DIEGOOO
+// CITA
 Route::apiResource('estilistas', PersonalController::class);
 Route::middleware('auth:sanctum')->group(function () {
 Route::apiResource('citas', CitaController::class);
 });
 
+// CITA ESCRITORIO
 Route::apiResource('estilistas', PersonalController::class);
 Route::middleware('auth:sanctum')->group(function () {
 Route::apiResource('citas-escritorio', CitaEscritorioController::class);
+});
+
+//GALERIA
+Route::get('galeria', [GaleriaController::class, 'index']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('galeria', [GaleriaController::class, 'store']);
+    Route::put('galeria/{id}', [GaleriaController::class, 'update']);
+    Route::delete('galeria/{id}', [GaleriaController::class, 'destroy']);
 });
