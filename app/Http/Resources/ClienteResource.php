@@ -19,7 +19,7 @@ class ClienteResource extends JsonResource
             'nom' => $this->nom,
             'apellido_p' => $this->apellido_p,
             'apellido_m' => $this->apellido_m,
-            'telefono' => $this->telefono,
+            'tel' => $this->tel,
             'citas' => CitaResource::collection($this->citas)//aqui podriamos meter el whenloaded
 
 

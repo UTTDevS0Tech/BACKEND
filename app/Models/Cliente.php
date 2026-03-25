@@ -10,7 +10,7 @@ class Cliente extends Model
         'nom',
         'apellido_p',
         'apellido_m',
-        'telefono',
+        'tel',
         'user_id'
 
     ];
