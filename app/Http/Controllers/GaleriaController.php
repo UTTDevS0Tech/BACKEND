@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\GalleryStoreRequest;
-use App\Http\Requests\GalleryUpdateRequest;
-use App\Http\Resources\GalleryResource;
+use App\Http\Requests\GaleriaRequest;
+use App\Http\Requests\GaleriaActualizarRequest;
+use App\Http\Resources\GaleriaResource;
 use App\Models\Galeria;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Storage;
