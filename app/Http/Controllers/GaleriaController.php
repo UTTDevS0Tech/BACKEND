@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\GalleryStoreRequest;
-use App\Http\Requests\GalleryUpdateRequest;
-use App\Http\Resources\GalleryResource;
+use App\Http\Requests\GaleriaRequest;
+use App\Http\Requests\GaleriaActualizarRequest;
+use App\Http\Resources\GaleriaResource;
 use App\Models\Galeria;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Storage;
@@ -22,6 +22,20 @@ class GaleriaController extends Controller
             'Imágenes obtenidas correctamente.'
         );
     }
+
+    public function show($id)
+{
+    $imagen = Galeria::find($id);
+
+    if (!$imagen) {
+        return $this->errorResponse('Imagen no encontrada.', 404);
+    }
+
+    return $this->apiResponse(
+        new \App\Http\Resources\GaleriaResource($imagen),
+        'Imagen obtenida correctamente.'
+    );
+}
 
     public function store(GaleriaRequest $request)
     {
