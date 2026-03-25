@@ -23,6 +23,20 @@ class GaleriaController extends Controller
         );
     }
 
+    public function show($id)
+{
+    $imagen = Galeria::find($id);
+
+    if (!$imagen) {
+        return $this->errorResponse('Imagen no encontrada.', 404);
+    }
+
+    return $this->apiResponse(
+        new \App\Http\Resources\GaleriaResource($imagen),
+        'Imagen obtenida correctamente.'
+    );
+}
+
     public function store(GaleriaRequest $request)
     {
         $data = $request->validated();

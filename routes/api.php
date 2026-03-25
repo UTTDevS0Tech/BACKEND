@@ -61,6 +61,7 @@ Route::apiResource('citas-escritorio', CitaEscritorioController::class);
 
 //GALERIA
 Route::get('galeria', [GaleriaController::class, 'index']);
+Route::get('galeria/{id}', [GaleriaController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('galeria', [GaleriaController::class, 'store']);
