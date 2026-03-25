@@ -11,6 +11,7 @@ use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\CitaEscritorioController;
 use App\Http\Controllers\GaleriaController;
 
+use App\Http\Controllers\RecepcionistaController;
 
 
 //USER
@@ -46,6 +47,17 @@ Route::apiResource('estilistas', PersonalController::class);
 Route::middleware('auth:sanctum')->group(function () {
 Route::apiResource('citas-escritorio', CitaEscritorioController::class);
 });
+
+
+// RUTAS FUNCIONES DE RECEPCIONISTA
+
+    //Crear cliente
+    Route::post('/crear-cliente', [RecepcionistaController::class, 'crearClient']);
+    //Ver clientes
+    Route::get('/ver-clientes', [RecepcionistaController::class, 'buscarClientes']);
+    //Crear cita
+    Route::post('/crear-cita', [RecepcionistaController::class, 'crearCita']);
+
 
 //GALERIA
 Route::get('galeria', [GaleriaController::class, 'index']);
