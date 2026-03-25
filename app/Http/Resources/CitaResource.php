@@ -23,6 +23,18 @@ class CitaResource extends JsonResource
         'fecha_c' => $this->fecha_c,
         'estado' => $this->estado,
         'cliente_id' => $this->cliente->nom,
+
+        'cliente'=>$this->whenLoaded('cliente', function () {
+            return [
+                'id' => $this->cliente->id,
+                'nom' => $this->cliente->nom,
+                'apellido_p' => $this->cliente->apellido_p,
+                'apellido_m' => $this->cliente->apellido_m,
+                'nombre_completo'=>trim("{$this->cliente->nom} {$this->cliente->apellido_p} {$this->cliente->apellido_m}"),
+                'tel' => $this->cliente->tel,
+            ];
+        }),
+
         ];
     }
 }
