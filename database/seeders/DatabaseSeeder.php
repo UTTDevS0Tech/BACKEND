@@ -21,7 +21,9 @@ class DatabaseSeeder extends Seeder
             RolSeeder::class,
             UserSeeder::class,
             ClienteSeeder::class,
-            PersonalSeeder::class
+            PersonalSeeder::class,
+            ServicioSeeder::class,
+            TipoServicioSeeder::class
         ]);
     }
 }
