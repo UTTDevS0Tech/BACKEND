@@ -49,7 +49,7 @@ class RecepcionistaController extends Controller
    public function crearCita(CitaEscritorioRequest $request){
 
    $data = $request->validated();
-    // valida que la cita que sse quiere crear no se sobreponga con otra cita del mismo personal en la misma fecha y hora, y que no esté cancelada
+    // valida que la cita que se quiere crear no se sobreponga con otra cita del mismo personal en la misma fecha y hora, y que no esté cancelada
     $existsOverlappingCita=Cita::where('personal_id', $data['personal_id'])
     ->where('fecha_c', $data['fecha_c'])
     ->where('hora_c', $data['hora_c'])
