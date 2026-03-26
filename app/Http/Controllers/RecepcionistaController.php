@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 
 class RecepcionistaController extends Controller
 {
+    use ApiResponse;
     
    public function crearClient(ClienteRecepRequest $request){
 
@@ -40,7 +41,7 @@ class RecepcionistaController extends Controller
             });
 
         }
-        $clientes = $query->latest->paginate(10);
+        $clientes = $query->latest()->paginate(10);
         return $this->successResponse(ClienteResource::collection($clientes), 'Clientes encontrados', 200);
    }
 

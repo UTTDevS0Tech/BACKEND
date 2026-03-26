@@ -34,6 +34,7 @@ class ClienteSeeder extends Seeder
         'apellido_m' => 'Garcia',
         'tel' => '91213121',
         'user_id' => null, // Aquí va null explícitamente o simplemente no lo pongas
+    
     ]);
 
 
