@@ -26,7 +26,8 @@ class CitaEscritorioRequest extends FormRequest
         'personal_id' => 'required|exists:personales,id',
         'hora_c' => 'required|date_format:H:i',
         'fecha_c' => 'required|date',
-        'estado' => 'required|in:pendiente,confirmada,cancelada',
+        'estado' => 'sometimes|in:pendiente,confirmada,cancelada',  
+        'apartado' => 'nullable|numeric|min:0',      
         'cliente_id' => 'required|exists:clientes,id',
     ];
     }
@@ -43,10 +44,12 @@ class CitaEscritorioRequest extends FormRequest
             'hora_c.date_format' => 'El campo hora_c debe tener el formato H:i.',
             'fecha_c.required' => 'El campo fecha_c es obligatorio.',
             'fecha_c.date' => 'El campo fecha_c debe ser una fecha válida.',
-            'estado.required' => 'El campo estado es obligatorio.',
             'estado.in' => 'El campo estado debe ser uno de los siguientes: pendiente, confirmada, cancelada.',
             'cliente_id.required' => 'El campo cliente_id es obligatorio.',
             'cliente_id.exists' => 'El cliente_id debe existir en la tabla clientes.',
+            'apartado.numeric' => 'El campo apartado debe ser un número.',
+            'apartado.min' => 'El campo apartado debe ser al menos 0.',
+
         ];
     }
 
