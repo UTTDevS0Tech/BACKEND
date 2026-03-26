@@ -70,4 +70,6 @@ class RecepcionistaController extends Controller
 
    }
 
+   
+
 }
