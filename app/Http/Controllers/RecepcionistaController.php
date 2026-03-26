@@ -14,7 +14,8 @@ use Illuminate\Http\Request;
 
 class RecepcionistaController extends Controller
 {
-    
+    use ApiResponse;
+
    public function crearClient(ClienteRecepRequest $request){
 
         $data= $request->validated();
@@ -68,5 +69,7 @@ class RecepcionistaController extends Controller
     return $this->successResponse(new CitaResource($cita), 'Cita creada exitosamente', 201);
 
    }
+
+   
 
 }
