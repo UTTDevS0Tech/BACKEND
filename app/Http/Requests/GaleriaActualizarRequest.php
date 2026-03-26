@@ -28,6 +28,7 @@ class GaleriaActualizarRequest extends FormRequest
             'imagen.image' => 'El archivo debe ser una imagen válida.',
             'imagen.mimes' => 'La imagen debe ser de tipo jpg, jpeg, png o webp.',
             'imagen.max' => 'La imagen no debe pesar más de 10 MB.',
+            //para puchear
         ];
     }
 
