@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 class RecepcionistaController extends Controller
 {
     use ApiResponse;
-    
+
    public function crearClient(ClienteRecepRequest $request){
 
         $data= $request->validated();
@@ -50,9 +50,9 @@ class RecepcionistaController extends Controller
 
    $data = $request->validated();
     // valida que la cita que sse quiere crear no se sobreponga con otra cita del mismo personal en la misma fecha y hora, y que no esté cancelada
-    $existsOverlappingCita=Cita::where(['personal_id', $data['personal_id']])
-    ->where('fecha', $data['fecha'])
-    ->where('hora', $data['hora'])
+    $existsOverlappingCita=Cita::where('personal_id', $data['personal_id'])
+    ->where('fecha_c', $data['fecha_c'])
+    ->where('hora_c', $data['hora_c'])
     ->where('estado', '!=', 'cancelada')
     ->exists();
 
