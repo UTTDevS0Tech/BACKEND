@@ -10,7 +10,6 @@ use App\Http\Controllers\CitaController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\CitaEscritorioController;
 use App\Http\Controllers\GaleriaController;
-
 use App\Http\Controllers\RecepcionistaController;
 
 
@@ -57,6 +56,12 @@ Route::apiResource('citas-escritorio', CitaEscritorioController::class);
     Route::get('/ver-clientes', [RecepcionistaController::class, 'buscarClientes']);
     //Crear cita
     Route::post('/crear-cita', [RecepcionistaController::class, 'crearCita']);
+    // Ver citas
+    Route::get('/ver-citas', [RecepcionistaController::class, 'verCitas']);
+    // Cancelar cita
+    Route::patch('/cancelar-cita/{id}', [RecepcionistaController::class, 'cancelarCita']);
+    // Reagendar cita
+    Route::patch('/reagendar-cita/{id}', [RecepcionistaController::class, 'reagendarCita']);
 
 
 //GALERIA
