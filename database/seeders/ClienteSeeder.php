@@ -23,8 +23,20 @@ class ClienteSeeder extends Seeder
             'apellido_m' => 'Epale',
             'tel' => '9123121',
             'user_id' => $usuario->id,  
+            
             ]);
        
     }
-}
+
+    Cliente::create([
+        'nom' => 'Esc',
+        'apellido_p' => 'Perez', // Evita poner basura como 'asdada' para que tus pruebas sean reales
+        'apellido_m' => 'Garcia',
+        'tel' => '91213121',
+        'user_id' => null, // Aquí va null explícitamente o simplemente no lo pongas
+    
+    ]);
+
+
+    }
 }

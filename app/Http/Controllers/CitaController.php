@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cita;
+use App\Models\Cliente;
 use App\Http\Resources\CitaResource;
 use App\Traits\ApiResponse;
-use Illuminate\Supports\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CitaRequest;
 use App\Http\Requests\CitaUpdateRequest;
 use Illuminate\Support\Facades\Log;
@@ -34,9 +35,9 @@ class CitaController extends Controller
     public function show ($id) {
         
 
-        $cita = Cita::with(['cliennte', 'personal', 'servicio'])->find($id);
+        $cita = Cita::with(['cliente', 'personal', 'servicio'])->find($id);
         if($id) {
-            return $this->apiResponse(new CitaResource($id), 'Cita regresada', 200);
+            return $this->apiResponse(new CitaResource($cita), 'Cita regresada', 200);
         } else {
             return $this->apiResponse(null, 'Cita no encontrada', 404);
 
