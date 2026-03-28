@@ -34,23 +34,21 @@ public function register(Request $request)
 public function login(LoginRequest $request)
 
 {
-    $credentials = $request->only('email', 'password');
+    
+  $credentials = $request->only('email', 'password');
 
     if (!auth()->attempt($credentials)) {
-        return $this->error('Credenciales inválidas', 401);
+        return $this->errorResponse('Credenciales inválidas', 401);
     }
 
     $user = auth()->user();
-
     $token = $user->createToken('auth_token')->plainTextToken;
 
-    $user->access_token = $token;
-    $user->token_type = 'Bearer';
-
-    return $this->apiResponse(
-        new UserResource($user),
-        'Inicio de sesión exitoso'
-    );
+    return $this->successResponse([
+        'token' => $token,
+        'token_type' => 'Bearer',
+        'user' => $user,
+    ], 'Inicio de sesión exitoso');
 
    /* $credentials = $request->validate([
         'email' => 'required|string|email',
