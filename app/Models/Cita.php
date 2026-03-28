@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cita extends Model
 {
         protected $fillable = [
+        'total',
         'apartado',
         'personal_id',
         'hora_c',

@@ -75,12 +75,18 @@ class CitaController extends Controller
             return $this->apiResponse(null, 'no hay perfil', 404);
 
         }
+
         $data = $request->validated();
+        $servicios = $data['detalle_cita'];
+
+        unset($data['detalle_cita']); //no se la compliquen es basicemten por q no hay campo detalle_cita pero ocupas guardar los servicios entonces es como "ey guardamos los servicios pero al llegar a la cita es como "compare tu no tienes el campo" okay entonces bay bay y ya se los metemos a la detalle_citas
         $data['cliente_id'] = $clienteabuscar->id;
         $data['estado'] = 'pendiente';
 
 
     $citaweb = Cita::create($data);
+
+    $citaweb->detalles()->createMany($servicios);
         return $this->apiResponse(new CitaResource($citaweb), 'cita web encontrada', 201);
     }
 }
