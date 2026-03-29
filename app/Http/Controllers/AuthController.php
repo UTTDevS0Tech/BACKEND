@@ -47,7 +47,7 @@ public function login(LoginRequest $request)
     return $this->successResponse([
         'token' => $token,
         'token_type' => 'Bearer',
-        'user' => $user,
+        'user' => new UserResource($user),
     ], 'Inicio de sesión exitoso');
 
    /* $credentials = $request->validate([
