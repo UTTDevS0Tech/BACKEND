@@ -70,6 +70,7 @@ class CitaController extends Controller
 //jalaraa??? quien sabe...
     public function store(CitaRequest $request) {
 
+        return DB::transaction(function() use ($request){
         $clienteabuscar = Cliente::where('user_id', Auth::id())->first();
 
         if(!$clienteabuscar) {
@@ -89,6 +90,7 @@ class CitaController extends Controller
 
     $citaweb->detalles()->createMany($servicios);
         return $this->apiResponse(new CitaResource($citaweb), 'cita web encontrada', 201);
+    });
     }
 }
 
