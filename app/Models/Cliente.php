@@ -11,6 +11,7 @@ class Cliente extends Model
         'apellido_p',
         'apellido_m',
         'tel',
+        'foto',
         'user_id'
 
     ];

@@ -11,6 +11,8 @@ use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\CitaEscritorioController;
 use App\Http\Controllers\GaleriaController;
 use App\Http\Controllers\RecepcionistaController;
+use App\Http\Controllers\ProfileController;
+
 
 
 //USER
@@ -70,3 +72,8 @@ Route::get('galeria/{id}', [GaleriaController::class, 'show']);
 Route::post('galeria', [GaleriaController::class, 'store']);
 Route::put('galeria/{id}', [GaleriaController::class, 'update']);
 Route::delete('galeria/{id}', [GaleriaController::class, 'destroy']);
+
+//PERFIL
+Route::get('/perfil', [ProfileController::class, 'mostrarPerfil']);
+Route::patch('/perfil', [ProfileController::class, 'actualizarPerfil']);
+Route::patch('/perfil/foto', [ProfileController::class, 'actualizarFoto']);
