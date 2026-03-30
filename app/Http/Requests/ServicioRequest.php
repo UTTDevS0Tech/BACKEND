@@ -31,7 +31,7 @@ class ServicioRequest extends FormRequest
     public function messages()
     {
         return [
-            'nombre.required' => 'El nombre del tipo de servicio es obligatorio.',
+            'nombre.required' => 'El nombre del servicio es obligatorio.',
             'nombre.string' => 'El nombre debe ser una cadena de texto.',
             'nombre.max' => 'El nombre no puede exceder los 255 caracteres.',
             'activo.boolean' => 'El campo activo debe ser verdadero o falso.',

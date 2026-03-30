@@ -31,7 +31,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 //SERVICIOS
 Route::apiResource('servicios', ServicioController::class);
-Route::patch('servicio/{id}/toggle', [ServicioController::class, 'toggle']);
+Route::patch('servicios/{id}/toggle', [ServicioController::class, 'toggle']);
 
 //TIPO SERVICIOS
 Route::apiResource('tipo-servicios', TipoServicioController::class);

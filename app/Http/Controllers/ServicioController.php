@@ -15,24 +15,33 @@ class ServicioController extends Controller
     {
         $servicios = Servicio::all();
 
-        return $this->apiResponse(
-            ServicioResource::collection($servicios));
+        return $this->successResponse(
+            ServicioResource::collection($servicios),
+            'Servicios obtenidos correctamente.',
+            200
+        );
     }
 
     public function show($id)
     {
         $servicio = Servicio::findOrFail($id);
 
-        return $this->apiResponse(
-            new ServicioResource($servicio));
+        return $this->successResponse(
+            new ServicioResource($servicio),
+            'Servicio obtenido correctamente.',
+            200
+        );
     }
 
     public function store(ServicioRequest $request)
     {
         $servicio = Servicio::create($request->validated());
 
-        return $this->apiResponse(
-            new ServicioResource($servicio));
+        return $this->successResponse(
+            new ServicioResource($servicio),
+            'Servicio creado correctamente.',
+            201
+        );
     }
 
     public function update(ServicioRequest $request, $id)
@@ -41,8 +50,11 @@ class ServicioController extends Controller
 
         $servicio->update($request->validated());
 
-        return $this->apiResponse(
-            new ServicioResource($servicio));
+        return $this->successResponse(
+            new ServicioResource($servicio),
+            'Servicio actualizado correctamente.',
+            200
+        );
     }
 
     public function destroy($id)
@@ -51,9 +63,9 @@ class ServicioController extends Controller
 
         $servicio->delete();
 
-        return $this->apiResponse(
+        return $this->successResponse(
             null,
-            'Servicio eliminado correctamente',
+            'Servicio eliminado correctamente.',
             200
         );
     }
@@ -71,7 +83,10 @@ class ServicioController extends Controller
             ]);
         }
 
-        return $this->apiResponse(
-            new ServicioResource($servicio));
+        return $this->successResponse(
+            new ServicioResource($servicio),
+            'Estado del servicio actualizado correctamente.',
+            200
+        );
     }
 }
