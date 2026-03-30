@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('apellido_p');
             $table->string('apellido_m');
             $table->string('tel')->nullable();
-            $table->string('foto')->nullable()->after('tel');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
         });

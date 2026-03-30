@@ -65,7 +65,6 @@ Route::apiResource('citas-escritorio', CitaEscritorioController::class);
     // Reagendar cita
     Route::patch('/reagendar-cita/{id}', [RecepcionistaController::class, 'reagendarCita']);
 
-
 //GALERIA
 Route::get('galeria', [GaleriaController::class, 'index']);
 Route::get('galeria/{id}', [GaleriaController::class, 'show']);
@@ -74,6 +73,5 @@ Route::put('galeria/{id}', [GaleriaController::class, 'update']);
 Route::delete('galeria/{id}', [GaleriaController::class, 'destroy']);
 
 //PERFIL
-Route::get('/perfil', [ProfileController::class, 'mostrarPerfil']);
-Route::patch('/perfil', [ProfileController::class, 'actualizarPerfil']);
-Route::patch('/perfil/foto', [ProfileController::class, 'actualizarFoto']);
+Route::get('/ver-perfil', [ProfileController::class, 'mostrarPerfil']);
+Route::patch('/actualizar-perfil', [ProfileController::class, 'actualizarPerfil']);
