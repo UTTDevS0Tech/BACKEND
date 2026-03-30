@@ -11,7 +11,7 @@ use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\CitaEscritorioController;
 use App\Http\Controllers\GaleriaController;
 use App\Http\Controllers\RecepcionistaController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PerfilController;
 
 
 
@@ -74,6 +74,6 @@ Route::delete('galeria/{id}', [GaleriaController::class, 'destroy']);
 
 //PERFIL
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/ver-perfil', [ProfileController::class, 'mostrarPerfil']);
-    Route::patch('/actualizar-perfil', [ProfileController::class, 'actualizarPerfil']);
+    Route::get('/ver-perfil', [PerfilController::class, 'mostrarPerfil']);
+    Route::patch('/actualizar-perfil', [PerfilController::class, 'actualizarPerfil']);
 });
