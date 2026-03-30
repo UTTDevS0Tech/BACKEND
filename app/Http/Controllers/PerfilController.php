@@ -8,7 +8,7 @@ use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class ProfileController extends Controller
+class PerfilController extends Controller
 {
     use ApiResponse;
 
