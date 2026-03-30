@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PerfilActualizarRequest;
-use App\Http\Requests\PerfilActualizarFotoRequest;
 use App\Http\Resources\PerfilResource;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -73,36 +71,6 @@ class ProfileController extends Controller
         return $this->successResponse(
             new PerfilResource($user),
             'Perfil actualizado correctamente.',
-            200
-        );
-    }
-
-    public function actualizarFoto(PerfilActualizarFotoRequest $request)
-    {
-        $user = $request->user()->load('cliente');
-
-        if (!$user->cliente) {
-            return $this->errorResponse(
-                'No se encontró el perfil del cliente.',
-                404
-            );
-        }
-
-        if ($user->cliente->foto) {
-            Storage::disk('public')->delete($user->cliente->foto);
-        }
-
-        $path = $request->file('foto')->store('clientes', 'public');
-
-        $user->cliente->update([
-            'foto' => $path,
-        ]);
-
-        $user->load(['rol', 'cliente']);
-
-        return $this->successResponse(
-            new PerfilResource($user),
-            'Foto de perfil actualizada correctamente.',
             200
         );
     }
