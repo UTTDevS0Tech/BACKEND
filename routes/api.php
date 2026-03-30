@@ -73,5 +73,7 @@ Route::put('galeria/{id}', [GaleriaController::class, 'update']);
 Route::delete('galeria/{id}', [GaleriaController::class, 'destroy']);
 
 //PERFIL
-Route::get('/ver-perfil', [ProfileController::class, 'mostrarPerfil']);
-Route::patch('/actualizar-perfil', [ProfileController::class, 'actualizarPerfil']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/ver-perfil', [ProfileController::class, 'mostrarPerfil']);
+    Route::patch('/actualizar-perfil', [ProfileController::class, 'actualizarPerfil']);
+});
