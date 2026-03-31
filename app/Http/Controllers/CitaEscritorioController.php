@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Traits\ApiResponse;
 use App\Models\Cita;
+use App\Models\DetalleCita;
 use App\Http\Requests\CitaEscritorioRequest;
 use App\Http\Resources\CitaResource;
+use Illuminate\Support\Facades\DB;
 
 class CitaEscritorioController extends Controller
 {
-    // lo mismo que con dieguito, este controller solo guarda la cita, no el detallecita, hay que checar eso en el store 
     use ApiResponse;
 
     public function index()
@@ -26,16 +27,42 @@ class CitaEscritorioController extends Controller
 
     public function store(CitaEscritorioRequest $request)
     {
-        $data = $request->validated();
-        $data['apartado'] = 0;
+        DB::beginTransaction();
 
-        $cita = Cita::create($data);
+        try {
+            $data = $request->validated();
 
-        return $this->apiResponse(
-            new CitaResource($cita),
-            'Cita de escritorio creada correctamente',
-            201
-        );
+            $detalles = $data['detalles'];
+            unset($data['detalles']);
+
+            $data['apartado'] = 0;
+
+            $cita = Cita::create($data);
+
+            foreach ($detalles as $detalle) {
+                DetalleCita::create([
+                    'cita_id' => $cita->id,
+                    'servicio_id' => $detalle['servicio_id'],
+                    'subtotal' => $detalle['subtotal'],
+                ]);
+            }
+
+            DB::commit();
+
+            return $this->apiResponse(
+                new CitaResource($cita),
+                'Cita de escritorio creada correctamente',
+                201
+            );
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            return $this->apiResponse(
+                null,
+                'Error al crear la cita de escritorio: ' . $e->getMessage(),
+                500
+            );
+        }
     }
 
     public function show($id)
@@ -68,15 +95,43 @@ class CitaEscritorioController extends Controller
             );
         }
 
-        $data = $request->validated();
-        $data['apartado'] = 0;
+        DB::beginTransaction();
 
-        $cita->update($data);
+        try {
+            $data = $request->validated();
 
-        return $this->apiResponse(
-            new CitaResource($cita),
-            'Cita de escritorio actualizada correctamente'
-        );
+            $detalles = $data['detalles'];
+            unset($data['detalles']);
+
+            $data['apartado'] = 0;
+
+            $cita->update($data);
+
+            DetalleCita::where('cita_id', $cita->id)->delete();
+
+            foreach ($detalles as $detalle) {
+                DetalleCita::create([
+                    'cita_id' => $cita->id,
+                    'servicio_id' => $detalle['servicio_id'],
+                    'subtotal' => $detalle['subtotal'],
+                ]);
+            }
+
+            DB::commit();
+
+            return $this->apiResponse(
+                new CitaResource($cita),
+                'Cita de escritorio actualizada correctamente'
+            );
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            return $this->apiResponse(
+                null,
+                'Error al actualizar la cita de escritorio: ' . $e->getMessage(),
+                500
+            );
+        }
     }
 
     public function destroy($id)
@@ -91,6 +146,7 @@ class CitaEscritorioController extends Controller
             );
         }
 
+        DetalleCita::where('cita_id', $cita->id)->delete();
         $cita->delete();
 
         return $this->apiResponse(
@@ -98,6 +154,5 @@ class CitaEscritorioController extends Controller
             'Cita de escritorio eliminada correctamente'
         );
     }
-}   
- 
+}
 
