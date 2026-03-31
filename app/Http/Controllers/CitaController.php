@@ -90,10 +90,6 @@ class CitaController extends Controller
         $horaFin = $horaInicio->copy()->addMinutes($minutosTotales);
 
 
-
-
-
-
         $chocaonochocaconotrohorario = Cita::where('personal_id', $request->persona_id)
         ->where('fecha_c', $request->fecha_c)
         ->where('estado', '!=', 'cancelada')
