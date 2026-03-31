@@ -18,9 +18,9 @@ class CitaRequest extends FormRequest
             'personal_id' => 'required|exists:personales,id',
             'hora_c' => 'required|date_format:H:i',
             'fecha_c' => 'required|date',
-            'estado' => 'nullable|in:pendiente,confirmada,cancelada',
+            'estado' => 'required|in:pendiente,confirmada,cancelada',
             'cliente_id' => 'nullable|exists:clientes,id',
-
+            
             'detalle_cita' => 'required|array|min:1',
             'detalle_cita.*.tipo_servicio_id' => 'required|exists:tipo_servicios,id',
             'detalle_cita.*.precio_capturado' => 'required|numeric|min:0',

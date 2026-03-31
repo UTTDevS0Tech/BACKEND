@@ -13,15 +13,16 @@ class TipoServicioResource extends JsonResource
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
-     {
+    {
         return [
             'id' => $this->id,
             'nombre' => $this->nombre,
             'descripcion' => $this->descripcion,
             'precio' => $this->precio,
-            'tiempo_estimado' => $this->tiempo_estimado
-           //duda con lo de imagen luego lo resolvemos
-           // okei vro 
+            'tiempo_estimado' => $this->tiempo_estimado,
+            'activo' => $this->activo,
+            'servicio_id' => $this->servicio_id,
+            'imagen' => $this->imagen,
         ];
     }
 }
