@@ -23,7 +23,7 @@ class PerfilController extends Controller
         );
     }
 
-    public function actualizarPerfil(PerfilActualizarRequest $request)
+    public function editarPerfil(PerfilActualizarRequest $request)
     {
         $user = $request->user()->load('cliente');
         $data = $request->validated();

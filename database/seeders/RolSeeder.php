@@ -23,5 +23,9 @@ class RolSeeder extends Seeder
             'nombre' => 'Cliente',
             'descripcion' => 'chilo'
         ]);
+        Rol::create([
+            'nombre' => 'Recepcionista',
+            'descripcion' => 'gestiona citas y clientes'
+        ]);
     }
 }

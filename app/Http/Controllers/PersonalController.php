@@ -18,6 +18,7 @@ class PersonalController extends Controller
         $estilistas = Personal::all();
         return $this->apiResponse(PersonalResource::collection($estilistas), 'Estilistas regresados', 200);
     }
+    //regresa todos los personales, que regrese solo estilistas o hagan una función aparte para estilistas y otra para recepcionistas 
 
 
     public function store(PersonalRequest $request) {
@@ -50,6 +51,7 @@ class PersonalController extends Controller
     }
 }
 
+// agregar metodo para ver solo las citas ligadas a este estilista pq si no es un pedote en el front 
 
 
     }

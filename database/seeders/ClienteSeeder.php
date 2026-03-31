@@ -29,7 +29,7 @@ class ClienteSeeder extends Seeder
     }
 
     Cliente::create([
-        'nom' => 'Esc',
+        'nom' => 'Ether',
         'apellido_p' => 'Perez', // Evita poner basura como 'asdada' para que tus pruebas sean reales
         'apellido_m' => 'Garcia',
         'tel' => '91213121',
