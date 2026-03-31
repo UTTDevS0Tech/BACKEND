@@ -71,6 +71,8 @@ class CitaController extends Controller
     }
 //jalaraa??? quien sabe...
 // no jala vro :'''''v
+
+
     public function store(CitaRequest $request) {
 
         return DB::transaction(function() use ($request){
