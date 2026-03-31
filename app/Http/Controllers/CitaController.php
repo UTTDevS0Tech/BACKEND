@@ -38,7 +38,7 @@ class CitaController extends Controller
         
 
         $cita = Cita::with(['cliente', 'personal', 'servicio'])->find($id);
-        if($id) {
+        if($cita) {
             return $this->apiResponse(new CitaResource($cita), 'Cita regresada', 200);
         } else {
             return $this->apiResponse(null, 'Cita no encontrada', 404);
