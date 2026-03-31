@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('total', 10, 2)->nullable();
             $table->foreignId('personal_id')->constrained('personales')->onDelete('cascade');
             $table->time('hora_c');
+            $table->time('hora_fin');
             $table->date('fecha_c');
             $table->enum('estado', ['pendiente', 'confirmada', 'cancelada'])->default('pendiente');
             $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');

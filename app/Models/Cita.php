@@ -12,6 +12,7 @@ class Cita extends Model
         'total',
         'personal_id',
         'hora_c',
+        'hora_fin',
         'fecha_c',
         'estado',
         'cliente_id'
