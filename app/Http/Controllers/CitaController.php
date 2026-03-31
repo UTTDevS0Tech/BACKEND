@@ -93,7 +93,7 @@ class CitaController extends Controller
         $horaFin = $horaInicio->copy()->addMinutes($minutosTotales);
 
 
-        $chocaonochocaconotrohorario = Cita::where('personal_id', $request->persona_id)
+        $chocaonochocaconotrohorario = Cita::where('personal_id', $request->personal_id)
         ->where('fecha_c', $request->fecha_c)
         ->where('estado', '!=', 'cancelada')
         ->where(function($query) use ($horaInicio, $horaFin){
@@ -113,6 +113,7 @@ class CitaController extends Controller
         $data['cliente_id'] = $clienteabuscar->id;
         $data['estado'] = 'pendiente';
         $data['hora_fin'] = $horaFin->format('H:i');
+        $data['total'] = $request->total;
 
 
     $citaweb = Cita::create($data);
