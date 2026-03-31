@@ -84,7 +84,7 @@ class CitaController extends Controller
 
         $minutosTotales = collect($request->detalle_cita)->reduce(function ($api, $item){
             $servicio = TipoServicio::find($item['tipo_servicio_id']);
-            return $api + $servicio->tiempo_duracion;
+            return $api + ($int)($servicio->tiempo_duracion ?? 0    );
         }, 0);
 
         $horaFin = $horaInicio->copy()->addMinutes($minutosTotales);
