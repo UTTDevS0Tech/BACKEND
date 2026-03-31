@@ -26,5 +26,19 @@ class UserSeeder extends Seeder
         'activo' => true,
         'rol_id' => Rol::where('nombre', 'Cliente')->first()->id,
         ]);
+
+                User::create([
+            'email' => 'recepcionista@gmail.com',
+        'password' => Hash::make('password123'),
+        'activo' => true,
+        'rol_id' => Rol::where('nombre', 'Recepcionista')->first()->id,
+        ]);
+
+                User::create([
+            'email' => 'admin@gmail.com',
+        'password' => Hash::make('password123'),
+        'activo' => true,
+        'rol_id' => Rol::where('nombre', 'Administrador')->first()->id,
+        ]);
     }
 }
