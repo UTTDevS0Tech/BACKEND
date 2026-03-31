@@ -68,6 +68,7 @@ class CitaController extends Controller
         }
     }
 //jalaraa??? quien sabe...
+// no jala vro :'''''v
     public function store(CitaRequest $request) {
 
         $clienteabuscar = Cliente::where('user_id', Auth::id())->first();

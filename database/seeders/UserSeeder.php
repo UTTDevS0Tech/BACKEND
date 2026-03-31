@@ -27,7 +27,8 @@ class UserSeeder extends Seeder
         'rol_id' => Rol::where('nombre', 'Cliente')->first()->id,
         ]);
 
-                User::create([
+
+        User::create([
             'email' => 'recepcionista@gmail.com',
         'password' => Hash::make('password123'),
         'activo' => true,
