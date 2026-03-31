@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     use ApiResponse;
 
-    // GET /users
+    // hacer una función solo para el admin que solo retorne estilista y recepcionista
     public function index()
     {
         $users = User::all();
@@ -20,7 +20,6 @@ class UserController extends Controller
         return $this->apiResponse(UserResource::collection($users),'Lista de usuarios');
     }
 
-    // GET /users/{id}
     public function show($id)
     {
         $user = User::find($id);
@@ -35,7 +34,6 @@ class UserController extends Controller
         );
     }
 
-    // POST /users
     public function store(UserRequest $request)
     {
         $data = $request->validated();
@@ -89,7 +87,7 @@ class UserController extends Controller
             'Estado del usuario actualizado correctamente'
         );
     }
-
+// que no sea con id, que sea con nombre del rol
     public function usersByRol($rol)
     {
         $users = User::where('rol_id', $rol)->get();

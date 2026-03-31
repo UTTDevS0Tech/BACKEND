@@ -6,20 +6,12 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CitaRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-   public function rules(): array
+    public function rules(): array
     {
         return [
             'apartado' => 'nullable|numeric|min:0',
@@ -28,14 +20,17 @@ class CitaRequest extends FormRequest
             'fecha_c' => 'required|date',
             'estado' => 'required|in:pendiente,confirmada,cancelada',
             'cliente_id' => 'nullable|exists:clientes,id',
+
+            'detalle_cita' => 'required|array|min:1',
+            'detalle_cita.*.tipo_servicio_id' => 'required|exists:tipo_servicios,id',
+            'detalle_cita.*.precio_capturado' => 'required|numeric|min:0',
         ];
     }
 
-     public function messages() {
-
+    public function messages(): array
+    {
         return [
             'apartado.nullable' => 'El apartado es opcional.',
-            'total.nullable' => 'El total es opcional.',
             'personal_id.required' => 'El personal es obligatorio.',
             'hora_c.required' => 'La hora de la cita es obligatoria.',
             'fecha_c.required' => 'La fecha de la cita es obligatoria.',
@@ -43,6 +38,14 @@ class CitaRequest extends FormRequest
             'cliente_id.required' => 'El cliente es obligatorio.',
             'personal_id.exists' => 'El personal seleccionado no existe.',
             'cliente_id.exists' => 'El cliente seleccionado no existe.',
+
+            'detalle_cita.required' => 'Debes agregar al menos un servicio a la cita.',
+            'detalle_cita.array' => 'El detalle de la cita debe ser un arreglo.',
+            'detalle_cita.min' => 'Debes agregar al menos un servicio a la cita.',
+            'detalle_cita.*.tipo_servicio_id.required' => 'El tipo de servicio es obligatorio.',
+            'detalle_cita.*.tipo_servicio_id.exists' => 'El tipo de servicio seleccionado no existe.',
+            'detalle_cita.*.precio_capturado.required' => 'El precio capturado es obligatorio.',
+            'detalle_cita.*.precio_capturado.numeric' => 'El precio capturado debe ser numérico.',
         ];
     }
 }

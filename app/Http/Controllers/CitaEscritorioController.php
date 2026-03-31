@@ -9,6 +9,7 @@ use App\Http\Resources\CitaResource;
 
 class CitaEscritorioController extends Controller
 {
+    // lo mismo que con dieguito, este controller solo guarda la cita, no el detallecita, hay que checar eso en el store 
     use ApiResponse;
 
     public function index()
