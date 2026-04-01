@@ -83,7 +83,7 @@ class CitaEscritorioController extends Controller
             foreach ($detalles as $detalle) {
                 DetalleCita::create([
                     'cita_id' => $cita->id,
-                    'servicio_id' => $detalle['servicio_id'],
+                    'tipo_servicio_id' => $detalle['servicio_id'],
                     'subtotal' => $detalle['subtotal'],
                 ]);
             }
@@ -175,7 +175,7 @@ class CitaEscritorioController extends Controller
             foreach ($detalles as $detalle) {
                 DetalleCita::create([
                     'cita_id' => $cita->id,
-                    'servicio_id' => $detalle['servicio_id'],
+                    'tipo_servicio_id' => $detalle['servicio_id'],
                     'subtotal' => $detalle['subtotal'],
                 ]);
             }

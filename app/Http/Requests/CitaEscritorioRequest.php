@@ -23,7 +23,7 @@ class CitaEscritorioRequest extends FormRequest
             'cliente_id' => 'required|exists:clientes,id',
 
             'detalles' => 'required|array|min:1',
-            'detalles.*.servicio_id' => 'required|exists:servicios,id',
+            'detalles.*.servicio_id' => 'required|exists:tipo_servicios,id',
             'detalles.*.subtotal' => 'required|numeric|min:0',
         ];
     }
