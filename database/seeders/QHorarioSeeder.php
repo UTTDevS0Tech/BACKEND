@@ -9,7 +9,7 @@ class QHorarioSeeder extends Seeder
 {
     public function run(): void
     {
-        $personales = [1, 2];
+        $personales = [1, 3];
 
         $horarios = [];
 
