@@ -23,7 +23,7 @@ Route::get('/tipo-servicios', [TipoServicioController::class, 'index']);
 Route::get('/galeria/{id}', [GaleriaController::class, 'show']);
 
 
-Route::apiResource('/estilistas', [PersonalController::class]);
+Route::apiResource('estilistas', PersonalController::class);
 
 // ADMIN
 Route::middleware(['auth:sanctum', 'role:Administrador'])->group(function () {
