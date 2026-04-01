@@ -19,9 +19,11 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/galeria', [GaleriaController::class, 'index']);
 Route::get('/servicios', [ServicioController::class, 'index']);
 Route::get('/tipo-servicios', [TipoServicioController::class, 'index']);
-Route::get('/estilistas', [PersonalController::class, 'index']);
+
 Route::get('/galeria/{id}', [GaleriaController::class, 'show']);
 
+
+Route::apiResource('/estilistas', [PersonalController::class]);
 
 // ADMIN
 Route::middleware(['auth:sanctum', 'role:Administrador'])->group(function () {
