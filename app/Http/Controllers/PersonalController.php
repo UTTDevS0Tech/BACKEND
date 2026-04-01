@@ -15,9 +15,12 @@ class PersonalController extends Controller
     
 
     public function index() {
-        $estilistas = Personal::all();
-        return $this->apiResponse(PersonalResource::collection($estilistas), 'Estilistas regresados', 200);
-    }
+        $estilista = Personal::with('horarios')->whereHas('user.rol', function($query) {
+            $query -> where('nombre', 'Estilista'); 
+        })->get();
+            return $this->apiResponse(  PersonalResource::collection($estilista),'estilistas' ,200);
+        }
+        
     //regresa todos los personales, que regrese solo estilistas o hagan una función aparte para estilistas y otra para recepcionistas 
 
 
@@ -46,15 +49,16 @@ class PersonalController extends Controller
         $personal->update($data);
         return $this->apiResponse(new PersonalResource($personal), 'Estilista updateado chido', 200);
     } else {
-        return $this->apiResponse(null, 'Personal no encontrado ni updeateado', 200);
+        return $this->apiResponse(null, 'Personal no encontrado ni updeateado', 404);
 
     }
 }
 
 // agregar metodo para ver solo las citas ligadas a este estilista pq si no es un pedote en el front 
+}
 
+    
 
-    }
 
 
 

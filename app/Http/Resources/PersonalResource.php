@@ -18,8 +18,16 @@ class PersonalResource extends JsonResource
             'id' => $this->id,
             'nombre' => $this->nombre,
             'descripcion' => $this->descripcion,
-            //podriamos meter las especialidades con el whenloaded tambien broders
+            //falta lo de horario desmenuzado 
+            'horarios' => $this->horarios->map(function($ho) {
+                return [
+                    'dia' => $ho->dia_semana,
+                    'inicio'=> $ho->hora_inicio,
+                    'fin'=> $ho->hora_fin,
+                    'activo'=>(bool)$ho->activo
 
+                ];
+            }),
         ];
     }
 }
