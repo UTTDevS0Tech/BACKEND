@@ -18,7 +18,7 @@ class PersonalController extends Controller
         $estilista = Personal::with('horarios')->whereHas('user.rol', function($query) {
             $query -> where('nombre', 'Estilista'); 
         })->get();
-            return $this->apiResponse(  PersonalResource::collection($estilista),'estilistas' ,200);
+            return $this->apiResponse(PersonalResource::collection($estilista),'estilistas' ,200);
         }
         
     //regresa todos los personales, que regrese solo estilistas o hagan una función aparte para estilistas y otra para recepcionistas 
