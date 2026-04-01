@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ClienteSeeder::class,
             PersonalSeeder::class,
+            QHorarioSeeder::class,
             ServicioSeeder::class,
             TipoServicioSeeder::class
         ]);
