@@ -87,7 +87,7 @@ class CitaController extends Controller
 
         $minutosTotales = collect($request->detalle_cita)->reduce(function ($api, $item){
             $servicio = TipoServicio::find($item['tipo_servicio_id']);
-            return $api + ($int)($servicio->tiempo_duracion ?? 0    );
+            return $api + (int)($servicio->tiempo_duracion ?? 0    );
         }, 0);
 
         $horaFin = $horaInicio->copy()->addMinutes($minutosTotales);
@@ -97,8 +97,7 @@ class CitaController extends Controller
         ->where('fecha_c', $request->fecha_c)
         ->where('estado', '!=', 'cancelada')
         ->where(function($query) use ($horaInicio, $horaFin){
-            $query->whereBetween('hora_c', [$horaInicio->format('H:i'), $horaFin->format('H:i')])
-            ->orWhereBetween('hora_fin', [$horaInicio->format('H:i'), $horaFin->format('H:i')]);
+            $query->where('hora_c', '<', $horaFin->format('H:i'))->where('hora_fin', '>', $horaInicio->format('H:i'));
         })
         
         ->exists();
@@ -119,7 +118,7 @@ class CitaController extends Controller
     $citaweb = Cita::create($data);
 
     $citaweb->detalles()->createMany($servicios);
-        return $this->apiResponse(new CitaResource($citaweb), 'cita web encontrada', 201);
+        return $this->apiResponse(new CitaResource($citaweb->load('detalles')), 'cita web encontrada', 201);
     });
     }
 }
