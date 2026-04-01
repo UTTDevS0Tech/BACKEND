@@ -18,11 +18,11 @@ class TipoServicioResource extends JsonResource
             'id' => $this->id,
             'nombre' => $this->nombre,
             'descripcion' => $this->descripcion,
+            'imagen' => $this->imagen,
+            'activo' => $this->activo,
             'precio' => $this->precio,
             'tiempo_estimado' => $this->tiempo_estimado,
-            'activo' => $this->activo,
             'servicio_id' => $this->servicio_id,
-            'imagen' => $this->imagen,
         ];
     }
 }
