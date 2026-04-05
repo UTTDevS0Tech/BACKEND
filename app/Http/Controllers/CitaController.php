@@ -74,7 +74,7 @@ class CitaController extends Controller
 
 
     public function store(CitaRequest $request) {
-
+try {
         return DB::transaction(function() use ($request){
         $clienteabuscar = Cliente::where('user_id', Auth::id())->first();
 
@@ -87,7 +87,7 @@ class CitaController extends Controller
 
         $minutosTotales = collect($request->detalle_cita)->reduce(function ($api, $item){
             $servicio = TipoServicio::find($item['tipo_servicio_id']);
-            return $api + (int)($servicio->tiempo_duracion ?? 0    );
+            return $api + (int)($servicio->tiempo_estimado ?? 0    );
         }, 0);
 
         $horaFin = $horaInicio->copy()->addMinutes($minutosTotales);
@@ -119,7 +119,14 @@ class CitaController extends Controller
 
     $citaweb->detalles()->createMany($servicios);
         return $this->apiResponse(new CitaResource($citaweb->load('detalles')), 'cita web encontrada', 201);
-    });
+   });
+    } catch (\Exception $e) {
+       return response()->json([
+        'message'=> $e->getMessage(),
+        'line'=> $e->getLine(),
+       ], 500);
+ 
     }
 }
 
+}
