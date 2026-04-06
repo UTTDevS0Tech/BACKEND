@@ -38,6 +38,8 @@ class RecepcionistaController extends Controller
                 $q->where('nom', 'like', "%{$search}%")
                 ->orWhere('apellido_p', 'like', "%{$search}%")
                 ->orWhere('apellido_m', 'like', "%{$search}%");
+                $q->orWhereRaw("CONCAT(nom, ' ', apellido_p, ' ', apellido_m) LIKE ?",["%{$search}%"]);
+
             });
 
         }
