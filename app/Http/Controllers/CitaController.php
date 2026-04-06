@@ -95,11 +95,14 @@ try {
         $horaFin = $horaInicio->copy()->addMinutes($minutosTotales);
 
 
+        $inicioHora = $horaInicio->format('H:i');
+        $finHora = $horaFin->format('H:i');
+
         $chocaonochocaconotrohorario = Cita::where('personal_id', $request->personal_id)
         ->where('fecha_c', $request->fecha_c)
         ->where('estado', '!=', 'cancelada')
-        ->where(function($query) use ($horaInicio, $horaFin){
-            $query->where('hora_c', '<', $horaFin->format('H:i'))->where('hora_fin', '>', $horaInicio->format('H:i'));
+        ->where(function($query) use ($inicioHora, $finHora){
+            $query->where('hora_c', '<', $finHora)->where('hora_fin', '>', $inicioHora);
         })
         
         ->exists();
