@@ -75,18 +75,20 @@ class CitaController extends Controller
 
     public function store(CitaRequest $request) {
 try {
-        return DB::transaction(function() use ($request){
-        $clienteabuscar = Cliente::where('user_id', Auth::id())->first();
+        return DB::transaction(function() use ($request){//esto es unicamente para que o se mande la cita completa o no se mande nada
+        $clienteabuscar = Cliente::where('user_id', Auth::id())->first(); //scamos el user_id del cliente para luego sacar su id y meterlo a la cita, esto es para que el cliente no tenga que mandar su id en la peticion, ademas de que asi evitamos que un cliente pueda mandar el id de otro cliente y crear citas a nombre de ese cliente, con esto nos aseguramos de que el cliente solo pueda crear citas a su nombre
 
         if(!$clienteabuscar) {
-            return $this->apiResponse(null, 'no hay perfil', 404);
+            return $this->apiResponse(null, 'no hay perfil', 404); //simple validacion no hay cliente(perfil) no hay cita 
 
         }
 
         $horaInicio = Carbon::parse($request->hora_c);
-
+//convertimos la hora_c a un numero int para poderlo sumar facil
         $minutosTotales = collect($request->detalle_cita)->reduce(function ($api, $item){
+   //aggarmos todo el tiempo estimado de cada serviicio para saber cuanto durara la cita        
             $servicio = TipoServicio::find($item['tipo_servicio_id']);
+
             return $api + (int)($servicio->tiempo_estimado ?? 0    );
         }, 0);
 
