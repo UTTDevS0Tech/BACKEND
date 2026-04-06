@@ -16,7 +16,7 @@ class RecepcionistaController extends Controller
 {
     use ApiResponse;
 
-   public function crearClient(ClienteRecepRequest $request){
+   public function crearCliente(ClienteRecepRequest $request){
 
         $data= $request->validated();
         $data['user_id'] = null;
@@ -38,6 +38,8 @@ class RecepcionistaController extends Controller
                 $q->where('nom', 'like', "%{$search}%")
                 ->orWhere('apellido_p', 'like', "%{$search}%")
                 ->orWhere('apellido_m', 'like', "%{$search}%");
+                $q->orWhereRaw("TRIM(CONCAT(nom, ' ', apellido_p, ' ', apellido_m)) LIKE ?",["%{$search}%"]);
+
             });
 
         }

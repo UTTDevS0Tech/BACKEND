@@ -26,6 +26,7 @@ class ClienteRecepRequest extends FormRequest
             'apellido_p' => 'required|string|max:255',
             'apellido_m' => 'nullable|string|max:255',
             'tel' => 'nullable|string|max:15',
+            
         ];
     }
 
