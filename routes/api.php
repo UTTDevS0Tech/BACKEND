@@ -49,7 +49,7 @@ Route::middleware(['auth:sanctum', 'role:Administrador'])->group(function () {
 
 // RECEPCIONISTA
 Route::middleware(['auth:sanctum', 'role:Recepcionista'])->group(function () {
-    Route::post('/crear-cliente', [RecepcionistaController::class, 'crearClient']);
+    Route::post('/crear-cliente', [RecepcionistaController::class, 'crearCliente']);
     Route::get('/ver-clientes', [RecepcionistaController::class, 'buscarClientes']);
     Route::get('/buscar-citas-cliente', [RecepcionistaController::class, 'buscarCitasPorCliente']);
     Route::apiResource('citas-escritorio', CitaEscritorioController::class);

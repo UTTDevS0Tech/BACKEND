@@ -16,7 +16,7 @@ class RecepcionistaController extends Controller
 {
     use ApiResponse;
 
-   public function crearClient(ClienteRecepRequest $request){
+   public function crearCliente(ClienteRecepRequest $request){
 
         $data= $request->validated();
         $data['user_id'] = null;

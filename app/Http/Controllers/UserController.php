@@ -12,7 +12,6 @@ class UserController extends Controller
 {
     use ApiResponse;
 
-    // hacer una función solo para el admin que solo retorne estilista y recepcionista
     public function index()
     {
         $users = User::all();
