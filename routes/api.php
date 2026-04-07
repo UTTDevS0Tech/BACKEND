@@ -11,6 +11,8 @@ use App\Http\Controllers\CitaEscritorioController;
 use App\Http\Controllers\GaleriaController;
 use App\Http\Controllers\RecepcionistaController;
 use App\Http\Controllers\PerfilController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 // RUTAS PUBLICAS
 Route::post('/register', [AuthController::class, 'register']);
@@ -68,3 +70,20 @@ Route::middleware(['auth:sanctum', 'role:Cliente'])->group(function () {
 });
 
 Route::get('/test-mail', [AuthController::class, 'testMail']);
+
+//pedos de correo
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return response()->json([
+        'message' => 'Correo verificado correctamente'
+    ]);
+})->middleware(['auth:sanctum', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return response()->json([
+        'message' => 'Correo de verificación reenviado'
+    ]);
+})->middleware(['auth:sanctum', 'throttle:6,1']);

@@ -35,16 +35,21 @@ public function register(Request $request)
 
 
 public function login(LoginRequest $request)
-
 {
-    
-  $credentials = $request->only('email', 'password');
+    $credentials = $request->only('email', 'password');
 
     if (!auth()->attempt($credentials)) {
         return $this->errorResponse('Credenciales inválidas', 401);
     }
 
     $user = auth()->user();
+
+    if (!$user->hasVerifiedEmail()) {
+        auth()->logout();
+
+        return $this->errorResponse('Debes verificar tu correo antes de iniciar sesión', 403);
+    }
+
     $token = $user->createToken('auth_token')->plainTextToken;
 
     return $this->successResponse([
@@ -52,24 +57,6 @@ public function login(LoginRequest $request)
         'token_type' => 'Bearer',
         'user' => new UserResource($user),
     ], 'Inicio de sesión exitoso');
-
-   /* $credentials = $request->validate([
-        'email' => 'required|string|email',
-        'password' => 'required|string',
-    ]);
-
-    if (!auth()->attempt($credentials)) {
-        return response()->json(['message' => 'Credenciales inválidas'], 401);
-    }
-
-    $token = auth()->user()->createToken('auth_token')->plainTextToken;
-
-    return response()->json(['message' => 'Inicio de sesión exitoso', 
-    'token' => $token,
-    'user' => auth()->user(),
-    'token_type' => 'Bearer']);
-    */
-
 }
 
 public function logout(Request $request)
