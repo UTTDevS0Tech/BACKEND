@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Traits\ApiResponse;
 use App\Http\Requests\LoginRequest;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -77,6 +78,16 @@ public function logout(Request $request)
 
     return response()->json(['message' => 'Cerraste sesión fuga!']);
 
+}
+
+public function testMail()
+{
+    Mail::raw('🔥 Este es un correo de prueba desde Estética Nova', function ($message) {
+        $message->to('carlosdanielgrdz@gmail.com')
+                ->subject('Test Laravel + Resend');
+    });
+
+    return response()->json(['message' => 'Correo enviado']);
 }
 
 }
