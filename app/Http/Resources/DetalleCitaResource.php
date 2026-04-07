@@ -10,8 +10,7 @@ class DetalleCitaResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'tipo_servicio_id' => $this->tipo_servicio_id,
+            'servicio' => $this->tipoServicio?->nombre ?? 'Servicio desconocido',
             'precio_capturado' => $this->precio_capturado,
         ];
     }
