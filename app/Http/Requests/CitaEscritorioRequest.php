@@ -22,7 +22,7 @@ class CitaEscritorioRequest extends FormRequest
             'apartado' => 'nullable|numeric|min:0',
             'cliente_id' => 'required|exists:clientes,id',
 
-            'detalles' => 'required|array|min:1',
+            'detalles' => 'required|array|min:1|max:3',
             'detalles.*.servicio_id' => 'required|exists:tipo_servicios,id',
             'detalles.*.subtotal' => 'required|numeric|min:0',
         ];
@@ -34,6 +34,7 @@ class CitaEscritorioRequest extends FormRequest
             'detalles.required' => 'Debes enviar al menos un detalle.',
             'detalles.array' => 'El detalle debe ser un arreglo.',
             'detalles.min' => 'Debes agregar al menos un servicio.',
+            'detalles.max' => 'Solo puedes agregar máximo 3 servicios.',
             'detalles.*.servicio_id.required' => 'El servicio es obligatorio.',
             'detalles.*.servicio_id.exists' => 'El servicio seleccionado no existe.',
             'detalles.*.subtotal.required' => 'El subtotal es obligatorio.',
