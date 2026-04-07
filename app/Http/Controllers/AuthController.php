@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Traits\ApiResponse;
 use App\Http\Requests\LoginRequest;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -26,7 +27,9 @@ public function register(Request $request)
         'password' => bcrypt($validatedData['password']),
     ]);
 
-    return response()->json(['message' => 'Usuario Registrado correctamente :D', 'user' => $user], 201);
+    $user->sendEmailVerificationNotification();
+
+    return response()->json(['message' => 'Usuario registrado. Revisa tu correo para verificar tu cuenta.',], 201);
 
 }
 
@@ -75,6 +78,16 @@ public function logout(Request $request)
 
     return response()->json(['message' => 'Cerraste sesión fuga!']);
 
+}
+
+public function testMail()
+{
+    Mail::raw('🔥 Este es un correo de prueba desde Estética Nova', function ($message) {
+        $message->to('carlosdanielgrdz@gmail.com')
+                ->subject('Test Laravel + Resend');
+    });
+
+    return response()->json(['message' => 'Correo enviado']);
 }
 
 }
