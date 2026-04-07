@@ -29,7 +29,7 @@ class GaleriaRequest extends FormRequest
             'imagen.required' => 'La imagen es obligatoria.',
             'imagen.image' => 'El archivo debe ser una imagen válida.',
             'imagen.mimes' => 'La imagen debe ser de tipo jpg, jpeg, png o webp.',
-            'imagen.max' => 'La imagen no debe pesar más de 2 MB.',
+            'imagen.max' => 'La imagen no debe pesar más de 10 MB.',
         ];
     }
 }
