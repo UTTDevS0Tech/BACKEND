@@ -19,10 +19,13 @@ class AuthController extends Controller
 
 public function register(Request $request)
 {
-    
     $validatedData = $request->validate([
         'email' => 'required|string|email|max:255|unique:users',
         'password' => 'required|string|min:8|confirmed',
+        'nom' => 'required|string|max:255',
+        'apellido_p' => 'required|string|max:255',
+        'apellido_m' => 'required|string|max:255',
+        'tel' => 'nullable|string|max:20',
     ]);
 
     $user = User::create([
@@ -32,10 +35,18 @@ public function register(Request $request)
         'activo' => true,
     ]);
 
-    $user->notify(new VerifyEmailCustom());
+    $user->cliente()->create([
+        'nom' => $validatedData['nom'],
+        'apellido_p' => $validatedData['apellido_p'],
+        'apellido_m' => $validatedData['apellido_m'],
+        'tel' => $validatedData['tel'] ?? null,
+    ]);
 
-    return response()->json(['message' => 'Usuario registrado. Revisa tu correo para verificar tu cuenta.',], 201);
+    $user->sendEmailVerificationNotification();
 
+    return response()->json([
+        'message' => 'Usuario registrado correctamente. Revisa tu correo 👀',
+    ], 201);
 }
 
 
