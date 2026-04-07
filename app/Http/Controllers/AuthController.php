@@ -28,7 +28,7 @@ public function register(Request $request)
     $user = User::create([
         'email' => $validatedData['email'],
         'password' => bcrypt($validatedData['password']),
-        'rol_id' => 2,
+        'rol_id' => 3,
         'activo' => true,
     ]);
 
