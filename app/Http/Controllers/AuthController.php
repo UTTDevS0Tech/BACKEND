@@ -26,7 +26,9 @@ public function register(Request $request)
         'password' => bcrypt($validatedData['password']),
     ]);
 
-    return response()->json(['message' => 'Usuario Registrado correctamente :D', 'user' => $user], 201);
+    $user->sendEmailVerificationNotification();
+
+    return response()->json(['message' => 'Usuario registrado. Revisa tu correo para verificar tu cuenta.',], 201);
 
 }
 
