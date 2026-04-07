@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
         'password' => Hash::make('password123'),
         'activo' => true,
         'rol_id' => Rol::where('nombre', 'Estilista')->first()->id,
+        'email_verified_at' => now(),
     ]);
 
     
@@ -25,6 +26,8 @@ class UserSeeder extends Seeder
         'password' => Hash::make('password123'),
         'activo' => true,
         'rol_id' => Rol::where('nombre', 'Cliente')->first()->id,
+                'email_verified_at' => now(),
+
         ]);
 
 
@@ -33,6 +36,8 @@ class UserSeeder extends Seeder
         'password' => Hash::make('password123'),
         'activo' => true,
         'rol_id' => Rol::where('nombre', 'Recepcionista')->first()->id,
+                'email_verified_at' => now(),
+
         ]);
 
                 User::create([
@@ -40,6 +45,8 @@ class UserSeeder extends Seeder
         'password' => Hash::make('password123'),
         'activo' => true,
         'rol_id' => Rol::where('nombre', 'Administrador')->first()->id,
+                'email_verified_at' => now(),
+
         ]);
     }
 }
