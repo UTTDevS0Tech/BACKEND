@@ -28,6 +28,8 @@ public function register(Request $request)
     $user = User::create([
         'email' => $validatedData['email'],
         'password' => bcrypt($validatedData['password']),
+        'rol_id' => 2,
+        'activo' => true,
     ]);
 
     $user->notify(new VerifyEmailCustom());
