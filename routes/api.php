@@ -36,7 +36,9 @@ Route::middleware(['auth:sanctum', 'role:Administrador'])->group(function () {
     Route::patch('/tipo-servicios/{id}/toggle-status', [TipoServicioController::class, 'toggleStatus']);
 
     Route::apiResource('estilistas', PersonalController::class)->except(['index']);
-
+    
+    Route::get('/galeria', [GaleriaController::class, 'index']);
+    Route::get('/galeria/{id}', [GaleriaController::class, 'show']);
     Route::post('/galeria', [GaleriaController::class, 'store']);
     Route::put('/galeria/{id}', [GaleriaController::class, 'update']);
     Route::delete('/galeria/{id}', [GaleriaController::class, 'destroy']);

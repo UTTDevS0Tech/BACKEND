@@ -17,25 +17,30 @@ class GaleriaController extends Controller
     {
         $imagenes = Galeria::latest()->paginate(10);
 
-        return $this->apiResponse(
+        return $this->successResponse(
             GaleriaResource::collection($imagenes),
-            'Imágenes obtenidas correctamente.'
+            'Imágenes obtenidas correctamente.',
+            200
         );
     }
 
     public function show($id)
-{
-    $imagen = Galeria::find($id);
+    {
+        $imagen = Galeria::find($id);
 
-    if (!$imagen) {
-        return $this->errorResponse('Imagen no encontrada.', 404);
+        if (!$imagen) {
+            return $this->errorResponse(
+                'Imagen no encontrada.',
+                404
+            );
+        }
+
+        return $this->successResponse(
+            new GaleriaResource($imagen),
+            'Imagen obtenida correctamente.',
+            200
+        );
     }
-
-    return $this->apiResponse(
-        new \App\Http\Resources\GaleriaResource($imagen),
-        'Imagen obtenida correctamente.'
-    );
-}
 
     public function store(GaleriaRequest $request)
     {
@@ -48,7 +53,7 @@ class GaleriaController extends Controller
             'imagen' => $rutaImagen,
         ]);
 
-        return $this->apiResponse(
+        return $this->successResponse(
             new GaleriaResource($imagen),
             'Imagen subida correctamente.',
             201
@@ -60,16 +65,33 @@ class GaleriaController extends Controller
         $imagen = Galeria::find($id);
 
         if (!$imagen) {
-            return $this->errorResponse('Imagen no encontrada.', 404);
+            return $this->errorResponse(
+                'Imagen no encontrada.',
+                404
+            );
         }
 
-        $imagen->update([
-            'titulo' => $request->validated()['titulo'],
-        ]);
+        $data = $request->validated();
+        $datosActualizar = [];
 
-        return $this->apiResponse(
+        if (array_key_exists('titulo', $data)) {
+            $datosActualizar['titulo'] = $data['titulo'];
+        }
+
+        if ($request->hasFile('imagen')) {
+            if ($imagen->imagen && Storage::disk('public')->exists($imagen->imagen)) {
+                Storage::disk('public')->delete($imagen->imagen);
+            }
+
+            $datosActualizar['imagen'] = $request->file('imagen')->store('galeria', 'public');
+        }
+
+        $imagen->update($datosActualizar);
+
+        return $this->successResponse(
             new GaleriaResource($imagen),
-            'Título actualizado correctamente.'
+            'Imagen actualizada correctamente.',
+            200
         );
     }
 
@@ -78,7 +100,10 @@ class GaleriaController extends Controller
         $imagen = Galeria::find($id);
 
         if (!$imagen) {
-            return $this->errorResponse('Imagen no encontrada.', 404);
+            return $this->errorResponse(
+                'Imagen no encontrada.',
+                404
+            );
         }
 
         if ($imagen->imagen && Storage::disk('public')->exists($imagen->imagen)) {
@@ -87,9 +112,10 @@ class GaleriaController extends Controller
 
         $imagen->delete();
 
-        return $this->apiResponse(
+        return $this->successResponse(
             null,
-            'Imagen eliminada correctamente.'
+            'Imagen eliminada correctamente.',
+            200
         );
     }
 }
