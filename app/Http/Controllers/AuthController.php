@@ -8,6 +8,9 @@ use App\Traits\ApiResponse;
 use App\Http\Requests\LoginRequest;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\VerifyEmailCustom;
+
+
 
 class AuthController extends Controller
 {
@@ -27,7 +30,7 @@ public function register(Request $request)
         'password' => bcrypt($validatedData['password']),
     ]);
 
-    $user->sendEmailVerificationNotification();
+    $user->notify(new VerifyEmailCustom());
 
     return response()->json(['message' => 'Usuario registrado. Revisa tu correo para verificar tu cuenta.',], 201);
 
