@@ -49,12 +49,6 @@ public function login(LoginRequest $request)
 
     $user = auth()->user();
 
-    if (!$user->hasVerifiedEmail()) {
-        auth()->logout();
-
-        return $this->errorResponse('Debes verificar tu correo antes de iniciar sesión', 403);
-    }
-
     $token = $user->createToken('auth_token')->plainTextToken;
 
     return $this->successResponse([
