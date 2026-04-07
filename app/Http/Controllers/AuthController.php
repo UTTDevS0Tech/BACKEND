@@ -82,12 +82,23 @@ public function logout(Request $request)
 
 public function testMail()
 {
-    Mail::raw('🔥 Este es un correo de prueba desde Estética Nova', function ($message) {
-        $message->to('carlosdanielgrdz@gmail.com')
-                ->subject('Test Laravel + Resend');
-    });
+    try {
+        Mail::mailer('resend')->raw(' Este es un correo de prueba desde Estética Nova', function ($message) {
+            $message->to('carlosdanielgrdz@gmail.com')
+                    ->subject('Test Laravel + Resend');
+        });
 
-    return response()->json(['message' => 'Correo enviado']);
+        return response()->json([
+            'ok' => true,
+            'mailer' => config('mail.default'),
+            'message' => 'Correo enviado'
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'ok' => false,
+            'error' => $e->getMessage()
+        ], 500);
+    }
 }
 
 }
