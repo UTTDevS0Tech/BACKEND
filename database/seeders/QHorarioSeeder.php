@@ -18,7 +18,7 @@ class QHorarioSeeder extends Seeder
                 [
                     'dia_semana'  => 'Lunes',
                     'hora_inicio' => '09:00:00',
-                    'hora_fin'    => '18:00:00',
+                    'hora_fin'    => '20:30:00',
                     'activo'      => true,
                     'personal_id' => $personal_id,
                     'created_at'  => now(),
@@ -27,7 +27,7 @@ class QHorarioSeeder extends Seeder
                 [
                     'dia_semana'  => 'Martes',
                     'hora_inicio' => '09:00:00',
-                    'hora_fin'    => '18:00:00',
+                    'hora_fin'    => '20:30:00',
                     'activo'      => true,
                     'personal_id' => $personal_id,
                     'created_at'  => now(),
@@ -36,7 +36,7 @@ class QHorarioSeeder extends Seeder
                 [
                     'dia_semana'  => 'Miércoles',
                     'hora_inicio' => '09:00:00',
-                    'hora_fin'    => '18:00:00',
+                    'hora_fin'    => '20:30:00',
                     'activo'      => true,
                     'personal_id' => $personal_id,
                     'created_at'  => now(),
@@ -45,7 +45,7 @@ class QHorarioSeeder extends Seeder
                 [
                     'dia_semana'  => 'Jueves',
                     'hora_inicio' => '09:00:00',
-                    'hora_fin'    => '18:00:00',
+                    'hora_fin'    => '20:30:00',
                     'activo'      => true,
                     'personal_id' => $personal_id,
                     'created_at'  => now(),
@@ -54,7 +54,7 @@ class QHorarioSeeder extends Seeder
                 [
                     'dia_semana'  => 'Viernes',
                     'hora_inicio' => '09:00:00',
-                    'hora_fin'    => '18:00:00',
+                    'hora_fin'    => '20:30:00',
                     'activo'      => true,
                     'personal_id' => $personal_id,
                     'created_at'  => now(),
@@ -62,8 +62,8 @@ class QHorarioSeeder extends Seeder
                 ],
                 [
                     'dia_semana'  => 'Sábado',
-                    'hora_inicio' => '10:00:00',
-                    'hora_fin'    => '14:00:00',
+                    'hora_inicio' => '09:00:00',
+                    'hora_fin'    => '20:30:00',
                     'activo'      => true,
                     'personal_id' => $personal_id,
                     'created_at'  => now(),
