@@ -42,23 +42,16 @@ class GaleriaController extends Controller
         );
     }
 
-    public function store(GaleriaRequest $request)
-    {
-        $data = $request->validated();
+  public function store(GaleriaRequest $request)
+{
+    $rutaImagen = $request->file('imagen')->store('galeria', 'public');
 
-        $rutaImagen = $request->file('imagen')->store('galeria', 'public');
-
-        $imagen = Galeria::create([
-            'titulo' => $data['titulo'],
-            'imagen' => $rutaImagen,
-        ]);
-
-        return $this->successResponse(
-            new GaleriaResource($imagen),
-            'Imagen subida correctamente.',
-            201
-        );
-    }
+    return response()->json([
+        'ruta' => $rutaImagen,
+        'ruta_absoluta' => storage_path('app/public/' . $rutaImagen),
+        'existe' => file_exists(storage_path('app/public/' . $rutaImagen)),
+    ]);
+}
 
     public function update(GaleriaActualizarRequest $request, $id)
     {
