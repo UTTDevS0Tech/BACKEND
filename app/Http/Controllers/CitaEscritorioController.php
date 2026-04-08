@@ -85,7 +85,7 @@ public function index()
                 DetalleCita::create([
                     'cita_id' => $cita->id,
                     'tipo_servicio_id' => $detalle['servicio_id'],
-                    'subtotal' => $detalle['subtotal'],
+                    'precio_capturado' => $detalle['subtotal'],
                 ]);
             }
 
