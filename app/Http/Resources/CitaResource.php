@@ -19,11 +19,7 @@ class CitaResource extends JsonResource
             'hora_fin' => $this->hora_fin,
             'fecha_c' => $this->fecha_c,
             'estado' => $this->estado,
-            'cliente' => trim(
-                ($this->cliente?->nom ?? '') . ' ' .
-                ($this->cliente?->apellido_p ?? '') . ' ' .
-                ($this->cliente?->apellido_m ?? '')
-            ) ?: 'desconocido',
+            'cliente' => trim(($this->cliente?->nom ?? '') . ' ' .($this->cliente?->apellido_p ?? '') . ' ' .($this->cliente?->apellido_m ?? '')) ?: 'desconocido',
             'detalle_cita' => DetalleCitaResource::collection($this->whenLoaded('detalles')),
         ];
     }

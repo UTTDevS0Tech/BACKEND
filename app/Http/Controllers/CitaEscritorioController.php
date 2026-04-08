@@ -14,18 +14,19 @@ use Carbon\Carbon;
 class CitaEscritorioController extends Controller
 {
     use ApiResponse;
+//le moví pa ver los detalles citas ok?
+public function index()
+{
+    $citas = Cita::with(['cliente', 'personal', 'detalles.tipoServicio'])
+        ->whereNotNull('total')
+        ->get();
 
-    public function index()
-    {
-        $citas = Cita::where('apartado', 0)
-            ->whereNotNull('total')
-            ->get();
-
-        return $this->apiResponse(
-            CitaResource::collection($citas),
-            'Citas de escritorio obtenidas exitosamente'
-        );
-    }
+    return $this->apiResponse(
+        CitaResource::collection($citas),
+        'Citas obtenidas exitosamente',
+        200
+    );
+}
 
     public function store(CitaEscritorioRequest $request)
     {
