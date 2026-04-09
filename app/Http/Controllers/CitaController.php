@@ -82,8 +82,7 @@ try {
             return $this->apiResponse(null, 'no hay perfil', 404); //simple validacion no hay cliente(perfil) no hay cita 
 
         }
-
-        $horaInicio = Carbon::parse($request->hora_c);
+                $horaInicio = Carbon::parse($request->hora_c);
 //convertimos la hora_c a un numero int para poderlo sumar facil
         $minutosTotales = collect($request->detalle_cita)->reduce(function ($api, $item){
    //aggarmos todo el tiempo estimado de cada serviicio para saber cuanto durara la cita        
@@ -92,11 +91,29 @@ try {
             return $api + (int)($servicio->tiempo_estimado ?? 0    );
         }, 0);
 
-        $horaFin = $horaInicio->copy()->addMinutes($minutosTotales);
+            $horaFin = $horaInicio->copy()->addMinutes($minutosTotales);
 
 
         $inicioHora = $horaInicio->format('H:i');
         $finHora = $horaFin->format('H:i');
+
+        $diaDeLaSemana = Carbon::parse($request->fecha_c)->dayOfWeek;
+
+        $horariositrabajaonotrabaja = Horario::where('personal_id', $request->personal_id)->where('dia_semana', $diaDeLaSemana)->where('activo', true)->first();
+
+
+        if(!$horariositrabajaonotrabaja) {
+            return $this->apiResponse(null, 'ese dia no trabaja', 400); // no tiene mucha cincia //validacion para saber si el estilista trabaja el dia que el cliente quiere la cita
+
+        }
+
+        if($horaInicio < $horariositrabajaonotrabaja->hora_inicio || $horaFin > $horariositrabajaonotrabaja->hora_fin) {
+            return $this->apiResponse(null, 'ese horario no trabaja', 400); //validacion para saber si el estilista trabaja en el horario que el cliente quiere la cita
+
+        }
+
+
+    
 
         $chocaonochocaconotrohorario = Cita::where('personal_id', $request->personal_id)
         ->where('fecha_c', $request->fecha_c)
