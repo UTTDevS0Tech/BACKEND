@@ -57,6 +57,10 @@ Route::middleware(['auth:sanctum', 'role:Recepcionista'])->group(function () {
     Route::get('/ver-clientes', [RecepcionistaController::class, 'buscarClientes']);
     Route::get('/buscar-citas-cliente', [RecepcionistaController::class, 'buscarCitasPorCliente']);
     Route::apiResource('citas-escritorio', CitaEscritorioController::class);
+    Route::patch('/citas-escritorio/{id}/confirmar', [CitaEscritorioController::class, 'confirmar']);
+    Route::patch('/citas-escritorio/{id}/cancelar', [CitaEscritorioController::class, 'cancelar']);
+    Route::patch('/citas-escritorio/{id}/completar', [CitaEscritorioController::class, 'completar']);
+
 });
 
 // ESTILISTA

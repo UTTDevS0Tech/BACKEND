@@ -205,54 +205,60 @@ public function index()
 
 public function confirmar($id)
 {
-    $cita = Cita::find($id);
-
-    if (!$cita) {
-        return $this->apiResponse(null, 'Cita no encontrada', 404);
-    }
-
-    if (in_array($cita->estado, ['cancelada', 'completada'])) {
-        return $this->apiResponse(null, 'No se puede confirmar esta cita', 422);
-    }
-
-    $cita->estado = 'confirmada';
-    $cita->save();
-
-    return $this->apiResponse($cita, 'Cita confirmada correctamente', 200);
+    return $this->cambiarEstado(
+        $id,
+        'confirmada',
+        ['cancelada', 'completada'],
+        'No se puede confirmar esta cita',
+        'Cita confirmada correctamente'
+    );
 }
 
 public function cancelar($id)
 {
-    $cita = Cita::find($id);
-
-    if (!$cita) {
-        return $this->apiResponse(null, 'Cita no encontrada', 404);
-    }
-
-    if ($cita->estado === 'completada') {
-        return $this->apiResponse(null, 'No se puede cancelar una cita completada', 422);
-    }
-
-    $cita->estado = 'cancelada';
-    $cita->save();
-
-    return $this->apiResponse($cita, 'Cita cancelada correctamente', 200);
+    return $this->cambiarEstado(
+        $id,
+        'cancelada',
+        ['completada'],
+        'No se puede cancelar una cita completada',
+        'Cita cancelada correctamente'
+    );
 }
 
 public function completar($id)
 {
+    return $this->cambiarEstado(
+        $id,
+        'completada',
+        ['cancelada'],
+        'No se puede completar una cita cancelada',
+        'Cita completada correctamente'
+    );
+}
+
+private function cambiarEstado(
+    int $id,
+    string $nuevoEstado,
+    array $estadosInvalidos,
+    string $mensajeError,
+    string $mensajeExito
+) {
     $cita = Cita::find($id);
 
     if (!$cita) {
-        return $this->apiResponse(null, 'Cita no encontrada', 404);
+        return $this->errorResponse('Cita de escritorio no encontrada', 404);
     }
 
-    if ($cita->estado === 'cancelada') {
-        return $this->apiResponse(null, 'No se puede completar una cita cancelada', 422);
+    if (in_array($cita->estado, $estadosInvalidos, true)) {
+        return $this->errorResponse($mensajeError, 422);
     }
 
-    $cita->estado = 'completada';
-    $cita->save();
+    $cita->update([
+        'estado' => $nuevoEstado,
+    ]);
 
-    return $this->apiResponse($cita, 'Cita completada correctamente', 200);
+    return $this->successResponse(
+        new CitaResource($cita->fresh()),
+        $mensajeExito
+    );
 }
