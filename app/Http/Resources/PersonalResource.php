@@ -18,6 +18,7 @@ class PersonalResource extends JsonResource
             'id' => $this->id,
             'nombre' => $this->nombre,
             'descripcion' => $this->descripcion,
+            'user_id' => $this->user_id,
             //falta lo de horario desmenuzado 
             'horarios' => $this->horarios->map(function($ho) {
                 return [

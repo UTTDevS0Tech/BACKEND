@@ -20,8 +20,10 @@ class UserRequest extends FormRequest
             'password' => $userId
                 ? 'nullable|string|min:8|confirmed'
                 : 'required|string|min:8|confirmed',
-            'activo' => 'boolean',
-            'rol_id' => 'required|exists:roles,id',
+            'activo' => 'nullable|boolean',
+            'rol_id' => $userId
+                ? 'sometimes|exists:roles,id'
+                : 'required|exists:roles,id',
         ];
     }
 

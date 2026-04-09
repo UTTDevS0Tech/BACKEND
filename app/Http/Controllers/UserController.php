@@ -58,9 +58,12 @@ class UserController extends Controller
 
         $data = $request->validated();
 
-        if (isset($data['password'])) {
+        if (!empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
         }
+
 
         $user->update($data);
 
@@ -89,7 +92,9 @@ class UserController extends Controller
 // que no sea con id, que sea con nombre del rol
     public function usersByRol($rol)
     {
-        $users = User::where('rol_id', $rol)->get();
+       $users= User::whereHas('rol', function($query) use ($rol){
+       $query->where('nombre', $rol);
+       })->get();
 
         if ($users->isEmpty()) {
             return $this->apiResponse(null, 'No hay usuarios con ese rol', 404);
