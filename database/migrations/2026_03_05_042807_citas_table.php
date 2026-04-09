@@ -19,7 +19,7 @@ return new class extends Migration
             $table->time('hora_c');
             $table->time('hora_fin');
             $table->date('fecha_c');
-            $table->enum('estado', ['pendiente', 'confirmada', 'cancelada'])->default('pendiente');
+            $table->enum('estado', ['pendiente', 'confirmada', 'cancelada', 'completada'])->default('pendiente');
             $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');
             $table->timestamps();
         });
