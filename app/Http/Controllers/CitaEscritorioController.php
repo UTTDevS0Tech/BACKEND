@@ -202,3 +202,57 @@ public function index()
         return $this->apiResponse(null, 'Cita eliminada correctamente');
     }
 }
+
+public function confirmar($id)
+{
+    $cita = Cita::find($id);
+
+    if (!$cita) {
+        return $this->apiResponse(null, 'Cita no encontrada', 404);
+    }
+
+    if (in_array($cita->estado, ['cancelada', 'completada'])) {
+        return $this->apiResponse(null, 'No se puede confirmar esta cita', 422);
+    }
+
+    $cita->estado = 'confirmada';
+    $cita->save();
+
+    return $this->apiResponse($cita, 'Cita confirmada correctamente', 200);
+}
+
+public function cancelar($id)
+{
+    $cita = Cita::find($id);
+
+    if (!$cita) {
+        return $this->apiResponse(null, 'Cita no encontrada', 404);
+    }
+
+    if ($cita->estado === 'completada') {
+        return $this->apiResponse(null, 'No se puede cancelar una cita completada', 422);
+    }
+
+    $cita->estado = 'cancelada';
+    $cita->save();
+
+    return $this->apiResponse($cita, 'Cita cancelada correctamente', 200);
+}
+
+public function completar($id)
+{
+    $cita = Cita::find($id);
+
+    if (!$cita) {
+        return $this->apiResponse(null, 'Cita no encontrada', 404);
+    }
+
+    if ($cita->estado === 'cancelada') {
+        return $this->apiResponse(null, 'No se puede completar una cita cancelada', 422);
+    }
+
+    $cita->estado = 'completada';
+    $cita->save();
+
+    return $this->apiResponse($cita, 'Cita completada correctamente', 200);
+}
