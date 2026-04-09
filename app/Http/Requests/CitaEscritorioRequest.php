@@ -18,7 +18,7 @@ class CitaEscritorioRequest extends FormRequest
             'personal_id' => 'required|exists:personales,id',
             'hora_c' => 'required|date_format:H:i|after_or_equal:09:00|before_or_equal:20:00',
             'fecha_c' => 'required|date|after_or_equal:today|before_or_equal:2050-12-31',
-            'estado' => 'sometimes|in:pendiente,confirmada,cancelada',
+            'estado' => 'sometimes|in:pendiente,confirmada,cancelada,completada',
             'apartado' => 'nullable|numeric|min:0',
             'cliente_id' => 'required|exists:clientes,id',
 
