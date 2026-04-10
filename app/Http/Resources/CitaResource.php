@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\DetalleCitaResource;
 
 class CitaResource extends JsonResource
 {
@@ -21,15 +20,18 @@ class CitaResource extends JsonResource
             'fecha_c' => $this->fecha_c,
             'estado' => $this->estado,
             'cliente_id' => $this->cliente_id,
-            'cliente' => trim(($this->cliente?->nom ?? '') . ' ' .($this->cliente?->apellido_p ?? '') . ' ' .($this->cliente?->apellido_m ?? '')) ?: 'desconocido',
+            'cliente' => trim(
+                ($this->cliente?->nom ?? '') . ' ' .
+                ($this->cliente?->apellido_p ?? '') . ' ' .
+                ($this->cliente?->apellido_m ?? '')
+            ) ?: 'desconocido',
             'detalles' => $this->detalles->map(function ($detalle) {
-            return [
-                'servicio_id' => $detalle->tipo_servicio_id,
-                'subtotal' => $detalle->precio_capturado ?? $detalle->subtotal,
-                'servicio' => $detalle->tipoServicio?->nombre,
-            ];
-        })->values(),        
-        
+                return [
+                    'servicio_id' => $detalle->tipo_servicio_id,
+                    'subtotal' => (float) ($detalle->precio_capturado ?? $detalle->subtotal ?? 0),
+                    'servicio' => $detalle->tipoServicio?->nombre,
+                ];
+            })->values(),
         ];
     }
 }
