@@ -151,4 +151,40 @@ try {
     }
 }
 
+public function getDisponibilidad(DisponibilidadRequest $request) {
+    
+    $personalId = $request->personal_id;
+    $fecha = $request->fecha;
+    $diaDeLaSemana = Carbon::parse($fecha)->dayOfWeek;
+
+
+    $horario = Horario::where('personal_id', $personalId)->where('dia_semana', $diaDeLaSemana)->where('activo', true)->first();
+
+    if(!$horario) {
+        return $this->apiResponse(null, 'ese dia no trabaja', 400);
+    }
+
+    $citasOcupadas = Cita::where('personal_id', $personalId)->where('fecha_c', $fecha)->where('estado', '!=', 'cancelada')->get(['hora_c', 'hora_fin']);
+    $slots = [];// esta variable es pa guardar todos los botones(basicamente horas chavales gg)
+    $inicio = Carbon::parse($horario->hora_inicio);
+    $fin = Carbon::parse($horario->hora_fin);
+
+    while($inicio->copy()->addMinutes(30) <=$fin) {
+        $horaPropuesta = $inicio->format('H:i');
+
+
+        $estaOcupada = $citasOcupadas->contains(function($cita) use ($horaPropuesta) {
+            return $horaPropuesta >= Carbon::parse($cita->hora_c)->format('H:i') && $horaPropuesta < Carbon::parse($cita->hora_fin)->format('H:i');
+        });
+
+        if(!$estaOcupada) {
+            $slots[] = $horaPropuesta;
+        }
+
+        $inicio->addMinutes(30);
+
+}
+
+return $this->apiResponse(DisponibilidadResource::collection($slots), 'disponibilidad obtenida', 200);
+}
 }
