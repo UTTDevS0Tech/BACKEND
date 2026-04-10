@@ -89,17 +89,18 @@ public function index()
                 ]);
             }
 
-            return $this->apiResponse(
-                new CitaResource($cita),
-                'Cita creada correctamente',
-                201
-            );
+        return $this->apiResponse(
+            new CitaResource($cita->load(['cliente', 'personal', 'detalles.tipoServicio'])),
+            'Cita creada correctamente',
+            201
+        );
+
         });
     }
 
     public function show($id)
     {
-        $cita = Cita::find($id);
+        $cita = Cita::with(['cliente', 'personal', 'detalles.tipoServicio'])->find($id);
 
         if (!$cita) {
             return $this->apiResponse(null, 'Cita de escritorio no encontrada', 404);
@@ -177,14 +178,15 @@ public function index()
                 DetalleCita::create([
                     'cita_id' => $cita->id,
                     'tipo_servicio_id' => $detalle['servicio_id'],
-                    'subtotal' => $detalle['subtotal'],
+                    'precio_capturado' => $detalle['subtotal'],
                 ]);
             }
 
             return $this->apiResponse(
-                new CitaResource($cita),
+                new CitaResource($cita->load(['cliente', 'personal', 'detalles.tipoServicio'])),
                 'Cita actualizada correctamente'
             );
+
         });
     }
 
@@ -201,9 +203,8 @@ public function index()
 
         return $this->apiResponse(null, 'Cita eliminada correctamente');
     }
-}
 
-public function confirmar($id)
+    public function confirmar($id)
 {
     return $this->cambiarEstado(
         $id,
@@ -257,8 +258,11 @@ private function cambiarEstado(
         'estado' => $nuevoEstado,
     ]);
 
-    return $this->successResponse(
-        new CitaResource($cita->fresh()),
-        $mensajeExito
-    );
+        return $this->successResponse(
+            new CitaResource($cita->load(['cliente', 'personal', 'detalles.tipoServicio'])),
+            $mensajeExito
+        );
 }
+}
+
+
