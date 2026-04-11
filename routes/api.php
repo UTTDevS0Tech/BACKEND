@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 // RUTAS PUBLICAS
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+ Route::get('/citas/disponibilidad', [CitaController::class, 'getDisponibilidad']);
 
 Route::get('/galeria', [GaleriaController::class, 'index']);
 Route::get('/servicios', [ServicioController::class, 'index']);
@@ -73,7 +74,6 @@ Route::middleware(['auth:sanctum', 'role:Cliente'])->group(function () {
     Route::get('/servicios', [TipoServicioController::class, 'getActivosParaDiego']);
     Route::get('/ver-perfil', [PerfilController::class, 'mostrarPerfil']);
     Route::patch('/editar-perfil', [PerfilController::class, 'editarPerfil']);
-    Route::get('/citas/disponibilidad', [CitaController::class, 'getDisponibilidad']);
     Route::apiResource('citas', CitaController::class);
 });
 
