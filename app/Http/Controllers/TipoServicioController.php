@@ -16,6 +16,11 @@ class TipoServicioController extends Controller
      */
     use ApiResponse;
 
+        public function getActivosParaDiego() {
+        $tipoServicios = TipoServicio::where('activo', true)->get();
+        return $this->apiResponse(TipoServicioResource::collection($tipoServicios), 'Tipos de servucuis', 200);
+    }
+
     public function index()
     {
 
