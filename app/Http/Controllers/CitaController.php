@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\TipoServicio;
 use App\Models\Horario;
+use App\Http\Requests\DisponibilidadRequest;
+use App\Http\Resources\DisponibilidadResource;
+use App\Http\Resources\TipoServicioResource;
+use App\Http\Requests\TipoServicioRequest;
+
 
 
 class CitaController extends Controller
