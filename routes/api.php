@@ -60,6 +60,8 @@ Route::middleware(['auth:sanctum', 'role:Recepcionista'])->group(function () {
     Route::patch('/citas-escritorio/{id}/confirmar', [CitaEscritorioController::class, 'confirmar']);
     Route::patch('/citas-escritorio/{id}/cancelar', [CitaEscritorioController::class, 'cancelar']);
     Route::patch('/citas-escritorio/{id}/completar', [CitaEscritorioController::class, 'completar']);
+    Route::put('/clientes/{id}', [RecepcionistaController::class, 'actualizarCliente']);
+
 
 });
 

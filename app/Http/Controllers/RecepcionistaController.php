@@ -11,6 +11,7 @@ use App\Models\Cita;
 use App\Models\Cliente;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use App\Http\Requests\ActualizarClienteRequest;
 
 class RecepcionistaController extends Controller
 {
@@ -72,6 +73,22 @@ class RecepcionistaController extends Controller
     );
 }
 
+public function actualizarCliente(ActualizarClienteRequest $request, $id)
+{
+    $cliente = Cliente::find($id);
+
+    if (!$cliente) {
+        return $this->apiResponse(null, 'Cliente no encontrado', 404);
+    }
+
+    $cliente->update($request->validated());
+
+    return $this->apiResponse(
+        new ClienteResource($cliente),
+        'Cliente actualizado correctamente',
+        200
+    );
+}
 
 
 }
