@@ -6,7 +6,6 @@ use App\Http\Requests\PerfilActualizarRequest;
 use App\Http\Resources\PerfilResource;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class PerfilController extends Controller
 {
@@ -54,17 +53,17 @@ class PerfilController extends Controller
             $clienteData['apellido_m'] = $data['apellido_m'];
         }
 
-        if (array_key_exists('tel', $data)) {
-            $clienteData['tel'] = $data['tel'];
-        }
-
         if (!empty($userData)) {
             $user->update($userData);
         }
 
-        if (!empty($clienteData) && $user->cliente) {
-            $user->cliente->update($clienteData);
+        if (!empty($clienteData)) {
+        if (!$user->cliente) {
+        return $this->errorResponse('No se encontro la informacion del cliente.', 404);
         }
+
+    $user->cliente->update($clienteData);
+}
 
         $user->load(['rol', 'cliente']);
 
