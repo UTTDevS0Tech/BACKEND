@@ -13,11 +13,10 @@ class DisponibilidadResource extends JsonResource
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
-    {
+    {//corregi esto 
         return [
-            'personal_id' => $this->resource,
-            'fecha' => $this->Carbon::parse($this->resource)->format('g:i A'),
-         
+            'hora'        => $this['hora'],
+            'formato_12h' => $this['formato_12h'],
         ];
     }
 }

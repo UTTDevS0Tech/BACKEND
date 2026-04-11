@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\TipoServicio;
+use App\Models\Horario;
 
 
 class CitaController extends Controller
@@ -85,8 +86,14 @@ try {
                 $horaInicio = Carbon::parse($request->hora_c);
 //convertimos la hora_c a un numero int para poderlo sumar facil
         $minutosTotales = collect($request->detalle_cita)->reduce(function ($api, $item){
+
+            $servicio = TipoServicio::find($item['tipo_servicio_id'])->where('activo', true)->first();
    //aggarmos todo el tiempo estimado de cada serviicio para saber cuanto durara la cita        
-            $servicio = TipoServicio::find($item['tipo_servicio_id']);
+         
+
+            if(!$servicio) {
+            throw new \Exception('Tipo de servicio no encontrado');
+            }
 
             return $api + (int)($servicio->tiempo_estimado ?? 0    );
         }, 0);
@@ -97,9 +104,12 @@ try {
         $inicioHora = $horaInicio->format('H:i');
         $finHora = $horaFin->format('H:i');
 
+        $dias = [0 => 'Domingo', 1 => 'Lunes', 2 => 'Martes', 3 => 'Miércoles', 4 => 'Jueves', 5 => 'Viernes', 6 => 'Sábado'];
+        $numeroDias = Carbon::parse($request->fecha_c)->dayOfWeek;
+        $nombreDia = $dias[$numeroDias];
         $diaDeLaSemana = Carbon::parse($request->fecha_c)->dayOfWeek;
 
-        $horariositrabajaonotrabaja = Horario::where('personal_id', $request->personal_id)->where('dia_semana', $diaDeLaSemana)->where('activo', true)->first();
+        $horariositrabajaonotrabaja = Horario::where('personal_id', $request->personal_id)->where('dia_semana', $nombreDia)->where('activo', true)->first();
 
 
         if(!$horariositrabajaonotrabaja) {
@@ -152,13 +162,22 @@ try {
 }
 
 public function getDisponibilidad(DisponibilidadRequest $request) {
-    
+  
     $personalId = $request->personal_id;
+
+
+
     $fecha = $request->fecha;
+
+
+    $dias = [0 => 'Domingo', 1 => 'Lunes', 2 => 'Martes', 3 => 'Miércoles', 4 => 'Jueves', 5 => 'Viernes', 6 => 'Sábado'];
+    
+    
     $diaDeLaSemana = Carbon::parse($fecha)->dayOfWeek;
-
-
-    $horario = Horario::where('personal_id', $personalId)->where('dia_semana', $diaDeLaSemana)->where('activo', true)->first();
+    $numeroDias = Carbon::parse($fecha)->dayOfWeek;
+    $nombreDia = $dias[$numeroDias];
+    
+    $horario = Horario::where('personal_id', $personalId)->where('dia_semana', $nombreDia)->where('activo', true)->first();
 
     if(!$horario) {
         return $this->apiResponse(null, 'ese dia no trabaja', 400);
@@ -178,7 +197,10 @@ public function getDisponibilidad(DisponibilidadRequest $request) {
         });
 
         if(!$estaOcupada) {
-            $slots[] = $horaPropuesta;
+         $slots[] = [
+                'hora' => $horaPropuesta,
+                'formato_12h' => $inicio->format('g:i A') // Esto pondrá "9:00 AM"
+            ];
         }
 
         $inicio->addMinutes(30);
