@@ -70,6 +70,7 @@ Route::middleware(['auth:sanctum', 'role:Estilista'])->group(function () {
 
 // CLIENTE
 Route::middleware(['auth:sanctum', 'role:Cliente'])->group(function () {
+    Route::get('/servicios', [TipoServicioController::class, 'getActivosParaDiego']);
     Route::get('/ver-perfil', [PerfilController::class, 'mostrarPerfil']);
     Route::patch('/editar-perfil', [PerfilController::class, 'editarPerfil']);
     Route::get('/citas/disponibilidad', [CitaController::class, 'getDisponibilidad']);
