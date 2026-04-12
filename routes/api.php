@@ -13,18 +13,21 @@ use App\Http\Controllers\RecepcionistaController;
 use App\Http\Controllers\PerfilController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use App\Http\Controllers\CategoriaGaleriaController;
 
 // RUTAS PUBLICAS
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
- Route::get('/citas/disponibilidad', [CitaController::class, 'getDisponibilidad']);
+Route::get('/citas/disponibilidad', [CitaController::class, 'getDisponibilidad']);
 
+Route::get('/categorias-galeria', [CategoriaGaleriaController::class, 'index']);
+
+Route::get('/galeria/publica', [GaleriaController::class, 'galeriaPublica']);
 Route::get('/galeria', [GaleriaController::class, 'index']);
-Route::get('/servicios', [ServicioController::class, 'index']);
-Route::get('/tipo-servicios', [TipoServicioController::class, 'index']);
-
 Route::get('/galeria/{id}', [GaleriaController::class, 'show']);
 
+Route::get('/servicios', [ServicioController::class, 'index']);
+Route::get('/tipo-servicios', [TipoServicioController::class, 'index']);
 
 Route::apiResource('estilistas', PersonalController::class);
 
@@ -37,6 +40,9 @@ Route::middleware(['auth:sanctum', 'role:Administrador'])->group(function () {
     Route::patch('/tipo-servicios/{id}/toggle-status', [TipoServicioController::class, 'toggleStatus']);
 
     Route::apiResource('estilistas', PersonalController::class)->except(['index']);
+
+    Route::post('/categorias-galeria', [CategoriaGaleriaController::class, 'store']);
+    Route::delete('/categorias-galeria/{id}', [CategoriaGaleriaController::class, 'destroy']);
     
     Route::get('/galeria', [GaleriaController::class, 'index']);
     Route::get('/galeria/{id}', [GaleriaController::class, 'show']);
@@ -77,7 +83,6 @@ Route::middleware(['auth:sanctum', 'role:Cliente'])->group(function () {
     Route::get('/ver-perfil', [PerfilController::class, 'mostrarPerfil']);
     Route::patch('/editar-perfil', [PerfilController::class, 'editarPerfil']);
     Route::apiResource('citas', CitaController::class);
-    Route::get('/galeria/publica', [GaleriaController::class, 'galeriaPublica']);
 });
 
 Route::get('/test-mail', [AuthController::class, 'testMail']);
