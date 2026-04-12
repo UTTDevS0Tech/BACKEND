@@ -12,12 +12,13 @@ class GaleriaActualizarRequest extends FormRequest
     }
 
     public function rules(): array
-    {
-        return [
-            'titulo' => 'sometimes|string|max:255',
-            'imagen' => 'sometimes|image|mimes:jpg,jpeg,png,webp|max:10000',
-        ];
-    }
+{
+    return [
+        'titulo' => 'sometimes|string|max:255',
+        'imagen' => 'sometimes|image|mimes:jpg,jpeg,png,webp|max:10000',
+        'categoria_id' => 'sometimes|exists:categorias_galeria,id',
+    ];
+}
 
     public function messages(): array
     {
@@ -33,17 +34,18 @@ class GaleriaActualizarRequest extends FormRequest
     }
 
     public function withValidator($validator): void
-    {
-        $validator->after(function ($validator) {
-            $hasTitulo = $this->has('titulo');
-            $hasImagen = $this->hasFile('imagen');
+{
+    $validator->after(function ($validator) {
+        $hasTitulo = $this->has('titulo');
+        $hasImagen = $this->hasFile('imagen');
+        $hasCategoria = $this->has('categoria_id');
 
-            if (!$hasTitulo && !$hasImagen) {
-                $validator->errors()->add(
-                    'request',
-                    'Debes enviar al menos un campo para actualizar: título o imagen.'
-                );
-            }
-        });
-    }
+        if (!$hasTitulo && !$hasImagen && !$hasCategoria) {
+            $validator->errors()->add(
+                'request',
+                'Debes enviar al menos un campo para actualizar: título, imagen o categoría.'
+            );
+        }
+    });
+}
 }

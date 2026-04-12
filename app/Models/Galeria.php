@@ -14,5 +14,11 @@ class Galeria extends Model
     protected $fillable = [
         'titulo',
         'imagen',
+        'categoria_id',
     ];
+
+    public function categoria()
+    {
+        return $this->belongsTo(CategoriaGaleria::class, 'categoria_id');
+    }
 }

@@ -8,6 +8,8 @@ use App\Http\Resources\GaleriaResource;
 use App\Models\Galeria;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\CategoriaGaleriaResource;
+use App\Models\CategoriaGaleria;
 
 class GaleriaController extends Controller
 {
@@ -15,7 +17,7 @@ class GaleriaController extends Controller
 
     public function index()
     {
-        $imagenes = Galeria::latest()->paginate(10);
+        $imagenes = Galeria::with('categoria')->latest()->paginate(10);
 
         return $this->successResponse(
             GaleriaResource::collection($imagenes),
@@ -26,7 +28,7 @@ class GaleriaController extends Controller
 
     public function show($id)
     {
-        $imagen = Galeria::find($id);
+        $imagen = Galeria::with('categoria')->find($id);
 
         if (!$imagen) {
             return $this->errorResponse(
@@ -49,9 +51,10 @@ class GaleriaController extends Controller
         $rutaImagen = $request->file('imagen')->store('galeria', 'public');
 
         $imagen = Galeria::create([
-            'titulo' => $data['titulo'],
-            'imagen' => $rutaImagen,
-        ]);
+        'titulo' => $data['titulo'],
+        'imagen' => $rutaImagen,
+        'categoria_id' => $data['categoria_id'],
+    ]);
 
         return $this->successResponse(
             new GaleriaResource($imagen),
@@ -86,6 +89,10 @@ class GaleriaController extends Controller
             $datosActualizar['imagen'] = $request->file('imagen')->store('galeria', 'public');
         }
 
+        if (array_key_exists('categoria_id', $data)) {
+            $datosActualizar['categoria_id'] = $data['categoria_id'];
+        }
+
         $imagen->update($datosActualizar);
 
         return $this->successResponse(
@@ -115,6 +122,19 @@ class GaleriaController extends Controller
         return $this->successResponse(
             null,
             'Imagen eliminada correctamente.',
+            200
+        );
+    }
+
+   public function galeriaPublica()
+    {
+        $categorias = CategoriaGaleria::with(['imagenes' => function ($query) {
+            $query->latest();
+        }])->get();
+
+        return $this->successResponse(
+            CategoriaGaleriaResource::collection($categorias),
+            'Galería pública obtenida correctamente.',
             200
         );
     }

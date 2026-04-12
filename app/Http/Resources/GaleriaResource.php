@@ -14,7 +14,13 @@ class GaleriaResource extends JsonResource
             'id' => $this->id,
             'titulo' => $this->titulo,
             'imagen' => $this->imagen,
-            'imagen_url' => $this->imagen ? asset('storage/' . $this->imagen) : null,            'created_at' => $this->created_at,
+            'imagen_url' => $this->imagen ? asset('storage/' . $this->imagen) : null,
+            'categoria_id' => $this->categoria_id,
+            'categoria' => $this->categoria ? [
+                'id' => $this->categoria->id,
+                'nombre' => $this->categoria->nombre,
+            ] : null,
+            'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
     }

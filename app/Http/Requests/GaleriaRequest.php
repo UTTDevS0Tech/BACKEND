@@ -12,12 +12,13 @@ class GaleriaRequest extends FormRequest
     }
 
     public function rules(): array
-    {
-        return [
-            'titulo' => 'required|string|max:255',
-            'imagen' => 'required|image|mimes:jpg,jpeg,png,webp|max:10000',
-        ];
-    }
+{
+    return [
+        'titulo' => 'required|string|max:255',
+        'imagen' => 'required|image|mimes:jpg,jpeg,png,webp|max:10000',
+        'categoria_id' => 'required|exists:categorias_galeria,id',
+    ];
+}
 
     public function messages(): array
     {
@@ -30,6 +31,9 @@ class GaleriaRequest extends FormRequest
             'imagen.image' => 'El archivo debe ser una imagen válida.',
             'imagen.mimes' => 'La imagen debe ser de tipo jpg, jpeg, png o webp.',
             'imagen.max' => 'La imagen no debe pesar más de 10 MB.',
+
+            'categoria_id.required' => 'La categoría es obligatoria.',
+            'categoria_id.exists' => 'La categoría seleccionada no existe.',
         ];
     }
 }
