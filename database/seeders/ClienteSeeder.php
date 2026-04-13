@@ -18,10 +18,10 @@ class ClienteSeeder extends Seeder
 
         if($usuario) {
             Cliente::create([
-            'nom' => 'Juan',
-            'apellido_p' => 'Epa',
-            'apellido_m' => 'Epale',
-            'tel' => '9123121',
+            'nom' => 'Cliente',
+            'apellido_p' => '#',
+            'apellido_m' => '1',
+            'tel' => '11111111',
             'user_id' => $usuario->id,  
             
             ]);
@@ -29,10 +29,10 @@ class ClienteSeeder extends Seeder
     }
 
     Cliente::create([
-        'nom' => 'Ether',
-        'apellido_p' => 'Perez', // Evita poner basura como 'asdada' para que tus pruebas sean reales
-        'apellido_m' => 'Garcia',
-        'tel' => '91213121',
+        'nom' => 'Cliente',
+        'apellido_p' => '#', // Evita poner basura como 'asdada' para que tus pruebas sean reales
+        'apellido_m' => '2',
+        'tel' => '22222222',
         'user_id' => null, // Aquí va null explícitamente o simplemente no lo pongas
     
     ]);

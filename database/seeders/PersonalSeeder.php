@@ -14,19 +14,19 @@ class PersonalSeeder extends Seeder
     public function run(): void
     {
         Personal::create([
-              'nombre' => 'Sara Elizabet',
-            'descripcion' => 'maquillachidote',
+              'nombre' => 'Estilista 1',
+            'descripcion' => 'se especializa en maquillaje',
             'user_id' => 1  
         ]);
         Personal::create([
-              'nombre' => 'Diego Reyes',
-            'descripcion' => 'gestionacitasyasi',
-            'user_id' => 4
+              'nombre' => 'Estilista 2',
+            'descripcion' => 'se especializa en peinados',
+            'user_id' => 2
         ]);
         Personal::create([
-              'nombre' => 'sara elizabet',
-            'descripcion' => 'maquillachidote',
-            'user_id' => 1 
+              'nombre' => 'Estilista 3',
+            'descripcion' => 'se especializa en cortes de cabello',
+            'user_id' => 3 
             
         ]);
     }
