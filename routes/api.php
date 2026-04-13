@@ -83,6 +83,8 @@ Route::middleware(['auth:sanctum', 'role:Cliente'])->group(function () {
     Route::get('/ver-perfil', [PerfilController::class, 'mostrarPerfil']);
     Route::patch('/editar-perfil', [PerfilController::class, 'editarPerfil']);
     Route::apiResource('citas', CitaController::class);
+    Route::get('/mis-citas', [CitaController::class, 'misCitas']);
+
 });
 
 Route::get('/test-mail', [AuthController::class, 'testMail']);

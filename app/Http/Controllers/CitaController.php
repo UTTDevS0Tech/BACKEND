@@ -214,4 +214,28 @@ public function getDisponibilidad(DisponibilidadRequest $request) {
 
 return $this->apiResponse(DisponibilidadResource::collection($slots), 'disponibilidad obtenida', 200);
 }
+
+
+//perdón diego necesito moverle jajaja
+public function misCitas()
+{
+    $cliente = Cliente::where('user_id', Auth::id())->first();
+
+    if (!$cliente) {
+        return $this->apiResponse(null, 'Perfil de cliente no encontrado', 404);
+    }
+
+    $citas = Cita::with(['cliente', 'personal', 'detalles.tipoServicio'])
+        ->where('cliente_id', $cliente->id)
+        ->orderByDesc('fecha_c')
+        ->orderByDesc('hora_c')
+        ->get();
+
+    return $this->apiResponse(
+        CitaResource::collection($citas),
+        'Citas del cliente obtenidas correctamente',
+        200
+    );
+}
+
 }
