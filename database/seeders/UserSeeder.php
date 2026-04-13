@@ -12,7 +12,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
     User::create([
-        'email' => 'estilista@gmail.com',
+        'email' => 'estilista@estetica.com',
         'password' => Hash::make('password123'),
         'activo' => true,
         'rol_id' => Rol::where('nombre', 'Estilista')->first()->id,
