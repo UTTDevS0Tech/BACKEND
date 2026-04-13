@@ -7,6 +7,8 @@ use App\Models\Personal;
 use App\Http\Resources\PersonalResource;
 use App\Traits\ApiResponse;
 use App\Http\Requests\PersonalRequest;
+use Illuminate\Support\Facades\DB;
+
 
 
 class PersonalController extends Controller
