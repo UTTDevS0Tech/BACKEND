@@ -81,6 +81,7 @@ Route::middleware(['auth:sanctum', 'role:Recepcionista'])->group(function () {
 // ESTILISTA
 Route::middleware(['auth:sanctum', 'role:Estilista'])->group(function () {
     Route::get('/mis-citas', [PersonalController::class, 'misCitas']);
+    Route::get('/verMisCitasComoEstilista', [PersonalController::class, 'verMisCitasComoEstilista']);
 });
 
 // CLIENTE
