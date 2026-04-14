@@ -7,6 +7,8 @@ use App\Models\Personal;
 use App\Http\Resources\PersonalResource;
 use App\Traits\ApiResponse;
 use App\Http\Requests\PersonalRequest;
+use Illuminate\Support\Facades\DB;
+
 
 
 class PersonalController extends Controller
@@ -54,6 +56,25 @@ class PersonalController extends Controller
         return $this->apiResponse(null, 'Personal no encontrado ni updeateado', 404);
 
     }
+}
+
+ 
+    public function verMisCitasComoEstilista(){
+        $userId = auth()->id();
+
+
+        $citasencontradas = DB::table('vista_mis_citas_estilista')->where('user_id', $userId)
+                ->orderBy('fecha_c', 'asc')
+                ->orderBy('hora_c', 'asc')
+                ->get();
+
+
+        if($citasencontradas->isEmpty()) {
+        return $this->apiResponse([], 'no se encontraron citas', 200);
+    }
+
+
+    return $this->apiResponse($citasencontradas, 'CITASS', 200);
 }
 
 // agregar metodo para ver solo las citas ligadas a este estilista pq si no es un pedote en el front 

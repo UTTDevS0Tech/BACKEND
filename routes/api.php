@@ -14,6 +14,8 @@ use App\Http\Controllers\PerfilController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CategoriaGaleriaController;
+use App\Http\Controllers\HorarioController;
+
 
 // RUTAS PUBLICAS
 Route::post('/register', [AuthController::class, 'register']);
@@ -56,6 +58,10 @@ Route::middleware(['auth:sanctum', 'role:Administrador'])->group(function () {
     Route::put('/users/{id}', [UserController::class, 'update']);
     Route::patch('/users/{id}/toggle', [UserController::class, 'toggleActivo']);
     Route::get('/users/rol/{rol}', [UserController::class, 'usersByRol']);
+
+    Route::get('/personales/{id}/horarios', [HorarioController::class, 'index']);
+    Route::put('/personales/{id}/horarios', [HorarioController::class, 'guardarSemana']);
+
 });
 
 // RECEPCIONISTA
@@ -75,6 +81,7 @@ Route::middleware(['auth:sanctum', 'role:Recepcionista'])->group(function () {
 // ESTILISTA
 Route::middleware(['auth:sanctum', 'role:Estilista'])->group(function () {
     Route::get('/mis-citas', [PersonalController::class, 'misCitas']);
+    Route::get('/verMisCitasComoEstilista', [PersonalController::class, 'verMisCitasComoEstilista']);
 });
 
 // CLIENTE
