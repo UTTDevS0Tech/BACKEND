@@ -152,7 +152,7 @@ try {
         $data['total'] = $request->total;
 
 
-    /*$citaweb = Cita::create($data);
+    /$citaweb = Cita::create($data);
 
     $citaweb->detalles()->createMany($servicios);
         return $this->apiResponse(new CitaResource($citaweb->load('detalles')), 'cita web encontrada', 201);
@@ -164,30 +164,6 @@ try {
        ], 500);
  
     }
-       */
-
-    $citaweb = Cita::create($data);
-
-$citaweb->detalles()->createMany($servicios);
-
-$citaweb->load([
-    'cliente.user',
-    'personal',
-    'detalles.tipoServicio'
-]);
-
-if ($citaweb->cliente?->user?->email) {
-    Mail::to($citaweb->cliente->user->email)
-        ->send(new CitaConfirmadaMail($citaweb));
-}
-
-return $this->apiResponse(
-    new CitaResource($citaweb),
-    'cita web encontrada',
-    201
-);
-}
-
 }
 
 public function getDisponibilidad(DisponibilidadRequest $request) {
