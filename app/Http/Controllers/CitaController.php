@@ -20,8 +20,8 @@ use App\Http\Requests\DisponibilidadRequest;
 use App\Http\Resources\DisponibilidadResource;
 use App\Http\Resources\TipoServicioResource;
 use App\Http\Requests\TipoServicioRequest;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\CitaConfirmadaMail;
+
+
 
 class CitaController extends Controller
 {
@@ -79,7 +79,7 @@ class CitaController extends Controller
 // no jala vro :'''''v
 
 
-    public function store(CitaRequest $request) {
+   /* public function store(CitaRequest $request) {
 try {
         return DB::transaction(function() use ($request){//esto es unicamente para que o se mande la cita completa o no se mande nada
         $clienteabuscar = Cliente::where('user_id', Auth::id())->first(); //scamos el user_id del cliente para luego sacar su id y meterlo a la cita, esto es para que el cliente no tenga que mandar su id en la peticion, ademas de que asi evitamos que un cliente pueda mandar el id de otro cliente y crear citas a nombre de ese cliente, con esto nos aseguramos de que el cliente solo pueda crear citas a su nombre
@@ -152,7 +152,7 @@ try {
         $data['total'] = $request->total;
 
 
-    /$citaweb = Cita::create($data);
+    $citaweb = Cita::create($data);
 
     $citaweb->detalles()->createMany($servicios);
         return $this->apiResponse(new CitaResource($citaweb->load('detalles')), 'cita web encontrada', 201);
@@ -163,6 +163,115 @@ try {
         'line'=> $e->getLine(),
        ], 500);
  
+    }
+}
+    */
+public function store(CitaRequest $request)
+{
+    try {
+        return DB::transaction(function () use ($request) {
+            $clienteabuscar = Cliente::where('user_id', Auth::id())->first();
+
+            if (!$clienteabuscar) {
+                return $this->apiResponse(null, 'no hay perfil', 404);
+            }
+
+            $horaInicio = Carbon::parse($request->hora_c);
+
+            $minutosTotales = collect($request->detalle_cita)->reduce(function ($api, $item) {
+                $servicio = TipoServicio::where('id', $item['tipo_servicio_id'])
+                    ->where('activo', true)
+                    ->first();
+
+                if (!$servicio) {
+                    throw new \Exception('Tipo de servicio no encontrado');
+                }
+
+                return $api + (int) ($servicio->tiempo_estimado ?? 0);
+            }, 0);
+
+            $horaFin = $horaInicio->copy()->addMinutes($minutosTotales);
+
+            $inicioHora = $horaInicio->format('H:i');
+            $finHora = $horaFin->format('H:i');
+
+            $dias = [
+                0 => 'Domingo',
+                1 => 'Lunes',
+                2 => 'Martes',
+                3 => 'Miércoles',
+                4 => 'Jueves',
+                5 => 'Viernes',
+                6 => 'Sábado'
+            ];
+
+            $numeroDias = Carbon::parse($request->fecha_c)->dayOfWeek;
+            $nombreDia = $dias[$numeroDias];
+
+            $horariositrabajaonotrabaja = Horario::where('personal_id', $request->personal_id)
+                ->where('dia_semana', $nombreDia)
+                ->where('activo', true)
+                ->first();
+
+            if (!$horariositrabajaonotrabaja) {
+                return $this->apiResponse(null, 'ese dia no trabaja', 400);
+            }
+
+            if (
+                $horaInicio < $horariositrabajaonotrabaja->hora_inicio ||
+                $horaFin > $horariositrabajaonotrabaja->hora_fin
+            ) {
+                return $this->apiResponse(null, 'ese horario no trabaja', 400);
+            }
+
+            $chocaonochocaconotrohorario = Cita::where('personal_id', $request->personal_id)
+                ->where('fecha_c', $request->fecha_c)
+                ->where('estado', '!=', 'cancelada')
+                ->where(function ($query) use ($inicioHora, $finHora) {
+                    $query->where('hora_c', '<', $finHora)
+                          ->where('hora_fin', '>', $inicioHora);
+                })
+                ->exists();
+
+            if ($chocaonochocaconotrohorario) {
+                return $this->apiResponse(null, 'ese horario ya ta busy compare', 400);
+            }
+
+            $data = $request->validated();
+            $servicios = $data['detalle_cita'];
+
+            unset($data['detalle_cita']);
+            $data['cliente_id'] = $clienteabuscar->id;
+            $data['estado'] = 'pendiente';
+            $data['hora_fin'] = $horaFin->format('H:i');
+            $data['total'] = $request->total;
+
+            $citaweb = Cita::create($data);
+
+            $citaweb->detalles()->createMany($servicios);
+
+            $citaweb->load([
+                'cliente.user',
+                'personal',
+                'detalles.tipoServicio'
+            ]);
+
+            if ($citaweb->cliente?->user?->email) {
+                Mail::to($citaweb->cliente->user->email)
+                    ->send(new CitaConfirmadaMail($citaweb));
+            }
+
+            return $this->apiResponse(
+                new CitaResource($citaweb),
+                'cita web encontrada',
+                201
+            );
+        });
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => $e->getMessage(),
+            'line' => $e->getLine(),
+        ], 500);
     }
 }
 
