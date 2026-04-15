@@ -59,23 +59,41 @@ class PersonalController extends Controller
 }
 
  
-    public function verMisCitasComoEstilista(){
-        $userId = auth()->id();
+public function verMisCitasComoEstilista(Request $request)
+{
+    $userId = auth()->id();
 
+    $query = DB::table('vista_mis_citas_estilista')
+        ->where('user_id', $userId);
 
-        $citasencontradas = DB::table('vista_mis_citas_estilista')->where('user_id', $userId)
-                ->orderBy('fecha_c', 'asc')
-                ->orderBy('hora_c', 'asc')
-                ->get();
+    if ($request->filled('categoria')) {
+        $query->where('categoria_cita', $request->categoria);
+    }
 
+    if ($request->filled('dia')) {
+        $query->where('dia_cita', $request->dia);
+    }
 
-        if($citasencontradas->isEmpty()) {
+    if ($request->filled('mes')) {
+        $query->where('mes_cita', $request->mes);
+    }
+
+    if ($request->filled('anio')) {
+        $query->where('anio_cita', $request->anio);
+    }
+
+    $citasencontradas = $query
+        ->orderBy('fecha_c', 'asc')
+        ->orderBy('hora_c', 'asc')
+        ->get();
+
+    if ($citasencontradas->isEmpty()) {
         return $this->apiResponse([], 'no se encontraron citas', 200);
     }
 
-
     return $this->apiResponse($citasencontradas, 'CITASS', 200);
 }
+
 
 // agregar metodo para ver solo las citas ligadas a este estilista pq si no es un pedote en el front 
 }
