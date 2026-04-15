@@ -94,8 +94,6 @@ public function verMisCitasComoEstilista(Request $request)
     return $this->apiResponse($citasencontradas, 'CITASS', 200);
 }
 
-
-// agregar metodo para ver solo las citas ligadas a este estilista pq si no es un pedote en el front 
 }
 
     
