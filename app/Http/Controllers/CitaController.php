@@ -20,6 +20,8 @@ use App\Http\Requests\DisponibilidadRequest;
 use App\Http\Resources\DisponibilidadResource;
 use App\Http\Resources\TipoServicioResource;
 use App\Http\Requests\TipoServicioRequest;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CitaConfirmadaMail;
 
 
 
