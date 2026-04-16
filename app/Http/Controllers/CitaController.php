@@ -182,9 +182,8 @@ try {
             }
 
             $horaInicio = Carbon::parse($request->hora_c);
-            $fechaCita = Carbon::parse($request->fecha_c);
 
-            if ($fechaCita->isToday() && $this->horarioYaPaso($request->fecha_c, $request->hora_c)) {
+            if ($this->horarioYaPaso($request->fecha_c, $request->hora_c)) {
                 throw new \Exception('esa hora ya pasó para el día de hoy');
             }
             //convertimos la hora_c a un numero int para poderlo sumar facil
@@ -291,7 +290,21 @@ try {
 
 private function horarioYaPaso(string $fecha, string $hora): bool{
 
-    return Carbon::parse($fecha . ' ' . $hora)->lessThanOrEqualTo(Carbon::now());
+    $timezone = 'America/Mexico_City';
+    $fechaCita = Carbon::parse($fecha, $timezone);
+    $ahora = Carbon::now($timezone);
+
+    if (!$fechaCita->isSameDay($ahora)) {
+        return false;
+    }
+
+    $momentoCita = Carbon::createFromFormat(
+        'Y-m-d H:i',
+        $fechaCita->format('Y-m-d') . ' ' . $hora,
+        $timezone
+    );
+
+    return $momentoCita->lessThanOrEqualTo($ahora);
     
     }
 
