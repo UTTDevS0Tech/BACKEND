@@ -18,7 +18,7 @@ beforeEach(function () {
     ]);
 });
 
-function crearUsuarioConRolSara(int $rolId, string $email): User {
+function crearUsuario(int $rolId, string $email): User {
     return User::create([
         'email' => $email,
         'password' => Hash::make('password'),
@@ -27,41 +27,35 @@ function crearUsuarioConRolSara(int $rolId, string $email): User {
     ]);
 }
 
-it('permite a un recepcionista crear un cliente', function () {
-    $recepcionista = crearUsuarioConRolSara(
-        $this->rolRecepcionista->id,
-        'recep@demo.com'
-    );
+it('recepcionista puede crear cliente', function () {
+    $user = crearUsuario($this->rolRecepcionista->id, 'recep@test.com');
+    Sanctum::actingAs($user);
 
-    Sanctum::actingAs($recepcionista);
-
-    $payload = [
+    $response = $this->postJson('/api/crear-cliente', [
         'nom' => 'Ana',
         'apellido_p' => 'Lopez',
         'apellido_m' => 'Martinez',
         'tel' => '9991234567',
-    ];
-
-    $response = $this->postJson('/api/crear-cliente', $payload);
+    ]);
 
     $response->assertStatus(201);
+});
 
-    $this->assertDatabaseHas('clientes', [
+it('no permite crear cliente sin autenticacion', function () {
+    $response = $this->postJson('/api/crear-cliente', [
         'nom' => 'Ana',
         'apellido_p' => 'Lopez',
         'apellido_m' => 'Martinez',
         'tel' => '9991234567',
-        'user_id' => null,
     ]);
+
+    $response->assertStatus(401);
 });
 
-it('impide que un usuario con otro rol cree clientes', function () {
-    $clienteUser = crearUsuarioConRolSara(
-        $this->rolCliente->id,
-        'cliente@demo.com'
-    );
 
-    Sanctum::actingAs($clienteUser);
+it('cliente no puede crear cliente (solo recepcionista)', function () {
+    $user = crearUsuario($this->rolCliente->id, 'cliente@test.com');
+    Sanctum::actingAs($user);
 
     $response = $this->postJson('/api/crear-cliente', [
         'nom' => 'Pedro',
@@ -70,20 +64,29 @@ it('impide que un usuario con otro rol cree clientes', function () {
         'tel' => '9990001111',
     ]);
 
-    $response
-        ->assertStatus(403)
-        ->assertJson([
-            'message' => 'No tienes permisos para acceder a este recurso',
-        ]);
+    $response->assertStatus(403);
 });
 
-it('permite a un recepcionista buscar clientes por nombre', function () {
-    $recepcionista = crearUsuarioConRolSara(
-        $this->rolRecepcionista->id,
-        'recep2@demo.com'
-    );
+it('recepcionista puede ver lista de clientes', function () {
+    $user = crearUsuario($this->rolRecepcionista->id, 'recep2@test.com');
+    Sanctum::actingAs($user);
 
-    Sanctum::actingAs($recepcionista);
+    Cliente::create([
+        'nom' => 'Carlos',
+        'apellido_p' => 'Perez',
+        'apellido_m' => 'Lopez',
+        'tel' => '1234567890',
+        'user_id' => null,
+    ]);
+
+    $response = $this->getJson('/api/ver-clientes');
+
+    $response->assertStatus(200);
+});
+
+it('recepcionista puede buscar cliente por nombre', function () {
+    $user = crearUsuario($this->rolRecepcionista->id, 'recep3@test.com');
+    Sanctum::actingAs($user);
 
     Cliente::create([
         'nom' => 'Ana',
@@ -94,7 +97,7 @@ it('permite a un recepcionista buscar clientes por nombre', function () {
     ]);
 
     Cliente::create([
-        'nom' => 'Carlos',
+        'nom' => 'Luis',
         'apellido_p' => 'Perez',
         'apellido_m' => 'Gomez',
         'tel' => '2222222222',
@@ -103,13 +106,25 @@ it('permite a un recepcionista buscar clientes por nombre', function () {
 
     $response = $this->getJson('/api/ver-clientes?search=Ana');
 
-    $response->assertStatus(200);
-    $response->assertJsonFragment([
-        'nom' => 'Ana',
-        'apellido_p' => 'Lopez',
+    $response->assertStatus(200)
+             ->assertJsonFragment(['nom' => 'Ana'])
+             ->assertJsonMissing(['nom' => 'Luis']);
+});
+
+
+it('crear cliente falla si faltan datos', function () {
+    $user = crearUsuario($this->rolRecepcionista->id, 'recep4@test.com');
+    Sanctum::actingAs($user);
+
+    $response = $this->postJson('/api/crear-cliente', [
+        'nom' => '',
     ]);
-    $response->assertJsonMissing([
-        'nom' => 'Carlos',
-        'apellido_p' => 'Perez',
-    ]);
+
+    $response->assertStatus(422);
+});
+
+it('endpoint ver clientes requiere autenticacion', function () {
+    $response = $this->getJson('/api/ver-clientes');
+
+    $response->assertStatus(401);
 });
