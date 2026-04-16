@@ -14,7 +14,6 @@ protected function buildMailMessage($url)
         ->greeting('¡Hola!')
         ->line('Gracias por registrarte en Estética Nova.')
         ->action('Verificar Email', $url)         
-        ->line('Ya puedes iniciar sesión')
         ->action('Acceder a mi cuenta', 'https://carlosd-dev.me/login')   
         ->line('Si tú no creaste esta cuenta, puedes ignorar este correo.');
 }
