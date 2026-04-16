@@ -91,6 +91,7 @@ Route::middleware(['auth:sanctum', 'role:Cliente'])->group(function () {
     Route::patch('/editar-perfil', [PerfilController::class, 'editarPerfil']);
     Route::apiResource('citas', CitaController::class);
     Route::get('/mis-citas', [CitaController::class, 'misCitas']);
+    Route::post('/create-payment-intent', [\App\Http\Controllers\API\StripeController::class, 'createPaymentIntent']);
 
 });
 

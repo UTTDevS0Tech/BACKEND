@@ -29,5 +29,11 @@ class PersonalSeeder extends Seeder
             'user_id' => 1 
             
         ]);
+        Personal::create([
+            'nombre' => 'fulano',
+            'descripcion' => 'se especiazliza en tal',
+            'user_id' => 5 
+        ]);
+
     }
 }
