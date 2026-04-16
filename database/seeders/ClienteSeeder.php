@@ -18,14 +18,14 @@ class ClienteSeeder extends Seeder
 
         if($usuario) {
             Cliente::create([
-            'nom' => 'Juan',
-            'apellido_p' => 'Epa',
-            'apellido_m' => 'Epale',
-            'tel' => '9123121',
+            'nom' => 'Hemenegildo',
+            'apellido_p' => 'García',
+            'apellido_m' => 'Flores',
+            'tel' => '8711234980',
             'user_id' => $usuario->id,  
             
             ]);
-       
+        }
     }
 
     Cliente::create([
