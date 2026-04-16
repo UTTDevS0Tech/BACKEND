@@ -166,8 +166,3 @@ public function verMisCitasComoEstilista(Request $request)
 }
 
 }
-
-    
-
-
-
