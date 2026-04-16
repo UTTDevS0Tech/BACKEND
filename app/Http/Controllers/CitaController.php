@@ -28,6 +28,7 @@ use App\Mail\CitaConfirmadaMail;
 class CitaController extends Controller
 {
     use ApiResponse;
+
     
 
     public function index() {
@@ -181,6 +182,11 @@ try {
             }
 
             $horaInicio = Carbon::parse($request->hora_c);
+            $fechaCita = Carbon::parse($request->fecha_c);
+
+            if ($fechaCita->isToday() && $this->horarioYaPaso($request->fecha_c, $request->hora_c)) {
+                throw new \Exception('esa hora ya pasó para el día de hoy');
+            }
             //convertimos la hora_c a un numero int para poderlo sumar facil
 
             $minutosTotales = collect($request->detalle_cita)->reduce(function ($api, $item) {
@@ -250,7 +256,6 @@ try {
             return $citaweb;
         });
 
-        // 🔥 YA FUERA DE LA TRANSACCIÓN (aquí ya no rompe la cita si falla)
         $citaweb->load([
             'cliente.user',
             'personal',
@@ -284,6 +289,11 @@ try {
 }
 
 
+private function horarioYaPaso(string $fecha, string $hora): bool{
+
+    return Carbon::parse($fecha . ' ' . $hora)->lessThanOrEqualTo(Carbon::now());
+    
+    }
 
 public function getDisponibilidad(DisponibilidadRequest $request) {
   
@@ -308,22 +318,23 @@ public function getDisponibilidad(DisponibilidadRequest $request) {
     }
 
     $citasOcupadas = Cita::where('personal_id', $personalId)->where('fecha_c', $fecha)->where('estado', '!=', 'cancelada')->get(['hora_c', 'hora_fin']);
-    $slots = [];// esta variable es pa guardar todos los botones(basicamente horas chavales gg)
+    $slots = [];
     $inicio = Carbon::parse($horario->hora_inicio);
     $fin = Carbon::parse($horario->hora_fin);
 
     while($inicio->copy()->addMinutes(30) <=$fin) {
         $horaPropuesta = $inicio->format('H:i');
+        $horaYaPaso = $this->horarioYaPaso($fecha, $horaPropuesta);
 
 
         $estaOcupada = $citasOcupadas->contains(function($cita) use ($horaPropuesta) {
             return $horaPropuesta >= Carbon::parse($cita->hora_c)->format('H:i') && $horaPropuesta < Carbon::parse($cita->hora_fin)->format('H:i');
         });
 
-        if(!$estaOcupada) {
+        if(!$estaOcupada && !$horaYaPaso) {
          $slots[] = [
                 'hora' => $horaPropuesta,
-                'formato_12h' => $inicio->format('g:i A') // Esto pondrá "9:00 AM"
+                'formato_12h' => $inicio->format('g:i A') 
             ];
         }
 
