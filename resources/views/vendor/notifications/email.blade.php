@@ -1,4 +1,3 @@
-cat > resources/views/vendor/notifications/email.blade.php << 'EOF'
 <x-mail::message>
 {{-- Greeting --}}
 @if (! empty($greeting))
