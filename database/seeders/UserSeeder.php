@@ -48,5 +48,13 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
 
         ]);
+
+        User::create([
+               'email' => 'fulano@gmail.com',
+        'password' => Hash::make('password123'),
+        'activo' => true,
+        'rol_id' => Rol::where('nombre', 'Estilista')->first()->id,
+                'email_verified_at' => now(),
+        ]);
     }
 }

@@ -23,7 +23,18 @@ class DisponibilidadRequest extends FormRequest
     {
         return [
             'personal_id' => 'required|exists:personales,id',
-            'fecha' => 'required|date',
+            'fecha' => 'required|date|after_or_equal:today',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'personal_id.required' => 'El estilista es obligatorio.',
+            'personal_id.exists' => 'El estilista seleccionado no existe.',
+            'fecha.required' => 'La fecha es obligatoria.',
+            'fecha.date' => 'La fecha no es válida.',
+            'fecha.after_or_equal' => 'No puedes consultar disponibilidad de fechas anteriores a hoy.',
         ];
     }
 }

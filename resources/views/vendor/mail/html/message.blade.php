@@ -9,8 +9,6 @@
 {{-- Body --}}
 {!! $slot !!}
 
-
-
 {{-- Footer --}}
 <x-slot:footer>
 <x-mail::footer>
