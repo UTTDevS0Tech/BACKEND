@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Personal;
+use App\Models\Horario;
 use App\Http\Resources\PersonalResource;
 use App\Traits\ApiResponse;
 use App\Http\Requests\PersonalRequest;
@@ -165,9 +166,3 @@ public function verMisCitasComoEstilista(Request $request)
 }
 
 }
-
-    
-
-
-
-
