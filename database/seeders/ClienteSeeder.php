@@ -18,9 +18,9 @@ class ClienteSeeder extends Seeder
 
         if($usuario) {
             Cliente::create([
-            'nom' => 'Juan',
-            'apellido_p' => 'Epa',
-            'apellido_m' => 'Epale',
+            'nom' => 'Hemenegildo',
+            'apellido_p' => 'Garcia',
+            'apellido_m' => 'Flores',
             'tel' => '9123121',
             'user_id' => $usuario->id,  
             
