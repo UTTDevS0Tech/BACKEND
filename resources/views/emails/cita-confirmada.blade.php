@@ -11,11 +11,10 @@
             <td align="center">
 
                 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;">
+                    
                     <tr>
                         <td style="padding:0 20px 10px 20px;">
-                            <p style="margin:0; font-size:13px; color:#7b725c;">
-                                Estética Nova
-                            </p>
+                            <img src="{{ asset('images/logo.png') }}" alt="Estética Nova" style="max-width:140px; height:auto; display:block;">
                         </td>
                     </tr>
 
@@ -61,37 +60,54 @@
 
                                         <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                             <tr>
-                                                <td style="padding:12px 0; border-bottom:1px solid #dfd1c1; font-size:14px; color:#8c7761;">Número de cita</td>
-                                                <td align="right" style="padding:12px 0; border-bottom:1px solid #dfd1c1; font-size:14px; color:#6b4b34;">#{{ $cita->id }}</td>
+                                                <td style="padding:12px 0; border-bottom:1px solid #dfd1c1; font-size:14px; color:#8c7761;">
+                                                    Número de cita
+                                                </td>
+                                                <td align="right" style="padding:12px 0; border-bottom:1px solid #dfd1c1; font-size:14px; color:#6b4b34;">
+                                                    #{{ $cita->id }}
+                                                </td>
                                             </tr>
+
                                             <tr>
-                                                <td style="padding:12px 0; border-bottom:1px solid #dfd1c1; font-size:14px; color:#8c7761;">Fecha</td>
+                                                <td style="padding:12px 0; border-bottom:1px solid #dfd1c1; font-size:14px; color:#8c7761;">
+                                                    Fecha
+                                                </td>
                                                 <td align="right" style="padding:12px 0; border-bottom:1px solid #dfd1c1; font-size:14px; color:#6b4b34;">
                                                     {{ \Carbon\Carbon::parse($cita->fecha_c)->format('d/m/Y') }}
                                                 </td>
                                             </tr>
+
                                             <tr>
-                                                <td style="padding:12px 0; border-bottom:1px solid #dfd1c1; font-size:14px; color:#8c7761;">Hora de inicio</td>
+                                                <td style="padding:12px 0; border-bottom:1px solid #dfd1c1; font-size:14px; color:#8c7761;">
+                                                    Hora de inicio
+                                                </td>
                                                 <td align="right" style="padding:12px 0; border-bottom:1px solid #dfd1c1; font-size:14px; color:#6b4b34;">
                                                     {{ \Carbon\Carbon::parse($cita->hora_c)->format('g:i A') }}
                                                 </td>
                                             </tr>
+
                                             <tr>
-                                                <td style="padding:12px 0; border-bottom:1px solid #dfd1c1; font-size:14px; color:#8c7761;">Hora de fin</td>
+                                                <td style="padding:12px 0; border-bottom:1px solid #dfd1c1; font-size:14px; color:#8c7761;">
+                                                    Hora de fin
+                                                </td>
                                                 <td align="right" style="padding:12px 0; border-bottom:1px solid #dfd1c1; font-size:14px; color:#6b4b34;">
                                                     {{ \Carbon\Carbon::parse($cita->hora_fin)->format('g:i A') }}
                                                 </td>
                                             </tr>
+
                                             <tr>
-                                                <td style="padding:12px 0; border-bottom:1px solid #dfd1c1; font-size:14px; color:#8c7761;">Te atiende</td>
+                                                <td style="padding:12px 0; border-bottom:1px solid #dfd1c1; font-size:14px; color:#8c7761;">
+                                                    Te atiende
+                                                </td>
                                                 <td align="right" style="padding:12px 0; border-bottom:1px solid #dfd1c1; font-size:14px; color:#6b4b34;">
-                                                    {{ $cita->personal->nom ?? '' }}
-                                                    {{ $cita->personal->apellido_p ?? '' }}
-                                                    {{ $cita->personal->apellido_m ?? '' }}
+                                                    {{ $cita->personal->nombre ?? 'Sin asignar' }}
                                                 </td>
                                             </tr>
+
                                             <tr>
-                                                <td style="padding:12px 0; font-size:14px; color:#8c7761;">Total</td>
+                                                <td style="padding:12px 0; font-size:14px; color:#8c7761;">
+                                                    Total
+                                                </td>
                                                 <td align="right" style="padding:12px 0; font-size:16px; font-weight:bold; color:#c47d2b;">
                                                     ${{ number_format($cita->total, 2) }}
                                                 </td>
@@ -106,10 +122,10 @@
                                             <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px; background:#fffdfa; border:1px solid #e2d4c4; border-radius:12px;">
                                                 <tr>
                                                     <td style="padding:14px 16px; font-size:14px; color:#6b4b34;">
-                                                        {{ $detalle->tipoServicio->nombre ?? $detalle->tipoServicio->nom ?? 'Servicio' }}
+                                                        {{ $detalle->tipoServicio->nombre ?? 'Servicio' }}
                                                     </td>
                                                     <td align="right" style="padding:14px 16px; font-size:14px; color:#6b4b34;">
-                                                        ${{ number_format($detalle->subtotal, 2) }}
+                                                        ${{ number_format($detalle->precio_capturado ?? 0, 2) }}
                                                     </td>
                                                 </tr>
                                             </table>
