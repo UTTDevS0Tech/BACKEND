@@ -80,7 +80,6 @@ Route::middleware(['auth:sanctum', 'role:Recepcionista'])->group(function () {
 
 // ESTILISTA
 Route::middleware(['auth:sanctum', 'role:Estilista'])->group(function () {
-    Route::get('/mis-citas', [PersonalController::class, 'misCitas']);
     Route::get('/verMisCitasComoEstilista', [PersonalController::class, 'verMisCitasComoEstilista']);
 });
 
@@ -91,6 +90,7 @@ Route::middleware(['auth:sanctum', 'role:Cliente'])->group(function () {
     Route::patch('/editar-perfil', [PerfilController::class, 'editarPerfil']);
     Route::apiResource('citas', CitaController::class);
     Route::get('/mis-citas', [CitaController::class, 'misCitas']);
+    Route::post('/create-payment-intent', [\App\Http\Controllers\API\StripeController::class, 'createPaymentIntent']);
 
 });
 

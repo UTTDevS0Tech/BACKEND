@@ -23,5 +23,11 @@ class PersonalSeeder extends Seeder
             'descripcion' => 'Profesionista en el área de la salud, con experiencia en atención al cliente y gestión de citas.',
             'user_id' => 4
         ]);
+        Personal::create([
+              'nombre' => 'sara elizabet',
+            'descripcion' => 'maquillachidote',
+            'user_id' => 1 
+            
+        ]);
     }
 }
