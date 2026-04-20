@@ -94,15 +94,15 @@ test('un usuario con rol cliente no puede acceder al endpoint ver mis citas como
         ]);
 });
 
-test('un usuario sin rol asignado no puede acceder al endpoint ver mis citas como estilista', function () {
-    $usuario = crearUsuarioSinRol();
+test('un usuario con rol recepcionista no puede acceder al endpoint ver mis citas como estilista', function () {
+    $recepcionista = crearUsuarioConRol(3);
 
-    Sanctum::actingAs($usuario);
+    Sanctum::actingAs($recepcionista);
 
     $this->getJson('/api/verMisCitasComoEstilista')
         ->assertStatus(403)
         ->assertJson([
-            'message' => 'El usuario no tiene rol asignado',
+            'message' => 'No tienes permisos para acceder a este recurso',
         ]);
 });
 
@@ -213,4 +213,40 @@ test('las citas del estilista se devuelven ordenadas por fecha y hora de forma a
     expect($data[0]['cliente_nombre'])->toBe('Andrea');
     expect($data[1]['cliente_nombre'])->toBe('Beto');
     expect($data[2]['cliente_nombre'])->toBe('Carlos');
+});
+
+test('la respuesta de ver mis citas como estilista contiene la estructura JSON esperada cuando existen registros', function () {
+    crearTablaTemporalVistaMisCitasEstilista();
+
+    $estilista = crearUsuarioConRol(1);
+
+    DB::table('vista_mis_citas_estilista')->insert([
+        [
+            'user_id' => $estilista->id,
+            'fecha_c' => '2026-04-20',
+            'hora_c' => '09:00:00',
+            'cliente_nombre' => 'Andrea',
+            'servicio_nombre' => 'Peinado',
+        ],
+    ]);
+
+    Sanctum::actingAs($estilista);
+
+    $this->getJson('/api/verMisCitasComoEstilista')
+        ->assertStatus(200)
+        ->assertJsonStructure([
+            'status',
+            'error',
+            'data' => [
+                '*' => [
+                    'id',
+                    'user_id',
+                    'fecha_c',
+                    'hora_c',
+                    'cliente_nombre',
+                    'servicio_nombre',
+                ]
+            ],
+            'message',
+        ]);
 });
