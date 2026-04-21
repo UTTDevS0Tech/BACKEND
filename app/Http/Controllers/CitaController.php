@@ -246,7 +246,7 @@ try {
             $data['cliente_id'] = $clienteabuscar->id;
             $data['estado'] = 'pendiente';
             $data['hora_fin'] = $horaFin->format('H:i');
-            $data['total'] = $request->total;
+            $data['total'] = $request->total + ($request->total * 0.16);
 
             $citaweb = Cita::create($data);
 
